@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll Beneficiary - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .enroll-container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-grid-full {
+            grid-column: 1 / -1;
+        }
+
+        .qr-display {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            text-align: center;
+            margin-top: 2rem;
+            border: 2px dashed var(--glass-border);
+        }
+
+        .qr-display.active {
+            border-color: var(--neon-purple);
+            background: var(--glass-bg);
+        }
+
+        .qr-display img {
+            max-width: 300px;
+            margin: 1rem auto;
+            display: block;
+        }
+
+        .child-age-section {
+            background: rgba(139, 92, 246, 0.05);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            margin-bottom: 1.5rem;
+        }
+
+        .mother-badge {
+            display: inline-block;
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <header class="mb-6">
+                <h1 class="animate-slideUp"><i class="fas fa-user-plus"></i> Enroll New Beneficiary</h1>
+                <p class="animate-slideUp" style="animation-delay: 0.1s;">Register a new beneficiary and generate their
+                    unique QR code.</p>
+            </header>
+
+            <div class="enroll-container animate-slideUp" style="animation-delay: 0.2s;">
+                <div class="card">
+                    <form onsubmit="event.preventDefault(); handleEnroll(this);" id="enrollForm">
+                        <h2 style="margin-bottom: 1.5rem;">Basic Details</h2>
+
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label class="form-label">Full Name *</label>
+                                <input type="text" name="name" class="form-input" placeholder="Enter full name"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Age *</label>
+                                <input type="number" name="age" class="form-input" placeholder="Age" min="1" max="120"
+                                    required>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Gender *</label>
+                                <select name="gender" class="form-input" required>
+                                    <option value="">Select Gender</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" name="phone" class="form-input" placeholder="Optional">
+                            </div>
+
+                            <div class="form-group form-grid-full">
+                                <label class="form-label">Address *</label>
+                                <textarea name="address" class="form-input" rows="3" placeholder="Current address"
+                                    required></textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Physical Ability *</label>
+                                <select name="physicalAbility" class="form-input" required>
+                                    <option value="">Select Ability</option>
+                                    <option value="Fully Able">Fully Able</option>
+                                    <option value="Partially Disabled">Partially Disabled</option>
+                                    <option value="Disabled">Disabled</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-label">Education Level</label>
+                                <select name="education" class="form-input">
+                                    <option value="">Select Level</option>
+                                    <option value="None">None</option>
+                                    <option value="Primary">Primary</option>
+                                    <option value="Secondary">Secondary</option>
+                                    <option value="Higher">Higher</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Child Information Section -->
+                        <div class="child-age-section">
+                            <h3 style="margin-bottom: 1rem;">
+                                <i class="fas fa-baby"></i> Child Information (if applicable)
+                            </h3>
+
+                            <div class="form-group">
+                                <label class="form-label">Do you have a child?</label>
+                                <div style="display: flex; gap: 1rem; margin-top: 0.5rem;">
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="radio" name="hasChild" value="yes" onchange="toggleChildAge(true)">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                                        <input type="radio" name="hasChild" value="no" checked
+                                            onchange="toggleChildAge(false)">
+                                        <span>No</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div id="childAgeContainer" style="display: none; margin-top: 1rem;">
+                                <div class="form-group">
+                                    <label class="form-label">Child's Age (in months) *</label>
+                                    <input type="number" name="childAge" id="childAgeInput" class="form-input"
+                                        placeholder="Enter age in months" min="0" max="240"
+                                        onchange="checkMotherStatus()">
+                                    <small style="color: var(--text-muted); margin-top: 0.5rem; display: block;">
+                                        <i class="fas fa-info-circle"></i> If child is less than 24 months (2 years),
+                                        you'll be marked as "Mother with Newborn"
+                                    </small>
+                                </div>
+
+                                <div id="motherStatusBadge" style="display: none;">
+                                    <div class="mother-badge">
+                                        <i class="fas fa-baby-carriage"></i> Qualified for "Mother with Newborn" Care
+                                        Program
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-full">
+                            <i class="fas fa-qrcode"></i> Enroll & Generate QR Code
+                        </button>
+                    </form>
+                </div>
+
+                <!-- QR Code Display Section -->
+                <div class="qr-display" id="qrDisplay">
+                    <i class="fas fa-qrcode"
+                        style="font-size: 3rem; color: var(--text-muted); margin-bottom: 1rem;"></i>
+                    <p style="color: var(--text-muted);">QR Code will appear here after enrollment</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function toggleChildAge(show) {
+            const container = document.getElementById('childAgeContainer');
+            const input = document.getElementById('childAgeInput');
+
+            if (show) {
+                container.style.display = 'block';
+                input.required = true;
+            } else {
+                container.style.display = 'none';
+                input.required = false;
+                input.value = '';
+                document.getElementById('motherStatusBadge').style.display = 'none';
+            }
+        }
+
+        function checkMotherStatus() {
+            const childAge = parseInt(document.getElementById('childAgeInput').value);
+            const badge = document.getElementById('motherStatusBadge');
+            const gender = document.querySelector('select[name="gender"]').value;
+
+            if (childAge && childAge < 24 && gender === 'Female') {
+                badge.style.display = 'block';
+                App.Animations.showConfetti();
+            } else {
+                badge.style.display = 'none';
+            }
+        }
+
+        function handleEnroll(form) {
+            const formData = new FormData(form);
+            const hasChild = formData.get('hasChild') === 'yes';
+            const childAge = hasChild ? parseInt(formData.get('childAge')) : null;
+            const gender = formData.get('gender');
+
+            // Determine if mother with newborn
+            const isNewBornMother = hasChild && childAge < 24 && gender === 'Female';
+
+            // Create beneficiary object
+            const beneficiary = {
+                name: formData.get('name'),
+                age: parseInt(formData.get('age')),
+                gender: gender,
+                phone: formData.get('phone') || 'Not Provided',
+                address: formData.get('address'),
+                physicalAbility: formData.get('physicalAbility'),
+                education: formData.get('education') || 'Not Specified',
+                hasChild: hasChild,
+                childAge: childAge,
+                isNewBornMother: isNewBornMother,
+                enrolledDate: new Date().toLocaleDateString(),
+                enrolledBy: App.Auth.getCurrentUser()?.name || 'Volunteer'
+            };
+
+            // Add to database
+            const enrolled = App.Data.addBeggar(beneficiary);
+
+            // Generate QR Code
+            const qrData = JSON.stringify({
+                id: enrolled.id,
+                name: enrolled.name,
+                type: 'beneficiary'
+            });
+
+            const qrUrl = App.UI.generateQR(qrData);
+
+            // Display QR Code
+            const qrDisplay = document.getElementById('qrDisplay');
+            qrDisplay.classList.add('active');
+            qrDisplay.innerHTML = `
+                <h3 style="color: var(--neon-purple); margin-bottom: 1rem;">
+                    <i class="fas fa-check-circle"></i> Enrollment Successful!
+                </h3>
+                ${isNewBornMother ? '<div class="mother-badge" style="margin-bottom: 1rem;"><i class="fas fa-baby-carriage"></i> Mother with Newborn - Care Program</div>' : ''}
+                <div style="background: white; padding: 1rem; border-radius: var(--radius); display: inline-block;">
+                    <img src="${qrUrl}" alt="QR Code">
+                </div>
+                <div style="margin-top: 1rem;">
+                    <strong style="font-size: 1.25rem; color: var(--text-primary);">${enrolled.name}</strong>
+                    <div style="color: var(--text-muted); margin-top: 0.5rem;">ID: ${enrolled.id}</div>
+                    <div style="color: var(--primary); font-weight: 600; margin-top: 0.5rem;">Initial Points: ${enrolled.points}</div>
+                </div>
+                <button onclick="window.print()" class="btn btn-outline" style="margin-top: 1.5rem;">
+                    <i class="fas fa-print"></i> Print QR Code
+                </button>
+                <button onclick="location.reload()" class="btn btn-primary" style="margin-top: 1.5rem; margin-left: 0.5rem;">
+                    <i class="fas fa-user-plus"></i> Enroll Another
+                </button>
+            `;
+
+            // Scroll to QR
+            qrDisplay.scrollIntoView({ behavior: 'smooth' });
+
+            // Show notification
+            App.Notifications.showToast(
+                `${enrolled.name} enrolled successfully! ${isNewBornMother ? '(Care Program Activated)' : ''}`,
+                'success'
+            );
+
+            // Confetti
+            App.Animations.showConfetti();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transparency - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .message-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            animation: slideUp 0.5s ease-out;
+            position: relative;
+        }
+
+        .message-card.donation {
+            border-left: 4px solid #10b981;
+        }
+
+        .message-card.usage {
+            border-left: 4px solid #ef4444;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .message-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .donation-icon {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .usage-icon {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .message-body {
+            background: rgba(255, 255, 255, 0.5);
+            padding: 1rem;
+            border-radius: var(--radius-sm);
+            font-size: 1.05rem;
+            line-height: 1.6;
+        }
+
+        .message-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .amount-badge {
+            font-size: 1.25rem;
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+        }
+
+        .amount-donation {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .amount-usage {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <header class="mb-6 text-center">
+                <h1 class="animate-slideUp"><i class="fas fa-hands-helping"></i> Transparency Timeline</h1>
+                <p class="animate-slideUp" style="animation-delay: 0.1s;">Every rupee tracked. Every sponsor notified.
+                    Complete transparency in action.</p>
+            </header>
+
+            <div style="max-width: 900px; margin: 0 auto;" id="timeline-container">
+                <!-- Messages injected here -->
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const transactions = JSON.parse(localStorage.getItem('hh_transactions') || '[]');
+            const container = document.getElementById('timeline-container');
+
+            if (transactions.length === 0) {
+                container.innerHTML = '<div class="text-center text-muted card">No transactions recorded yet.</div>';
+                return;
+            }
+
+            // Sort by newest first
+            transactions.sort((a, b) => b.id - a.id);
+
+            container.innerHTML = transactions.map((t, index) => {
+                const isDonation = t.type === 'Donation';
+                const delay = index * 0.1;
+
+                if (isDonation) {
+                    // Donation Message
+                    return `
+                        <div class="message-card donation" style="animation-delay: ${delay}s">
+                            <div style="display: flex; gap: 1rem;">
+                                <div class="message-icon donation-icon">
+                                    <i class="fas fa-hand-holding-usd"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div class="message-header">
+                                        <div>
+                                            <h3 style="margin: 0; color: #10b981;">Donation Received</h3>
+                                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                                <i class="fas fa-clock"></i> ${t.date}
+                                            </div>
+                                        </div>
+                                        <div class="amount-badge amount-donation">
+                                            +$${t.amount}
+                                        </div>
+                                    </div>
+                                    <div class="message-body">
+                                        <i class="fas fa-quote-left" style="opacity: 0.3;"></i>
+                                        <p style="margin: 0.5rem 0;">
+                                            <strong>Dear ${t.user || 'Generous Sponsor'},</strong><br><br>
+                                            Thank you for your incredible contribution of <strong>$${t.amount}</strong> to Helping Hands! 
+                                            Your generosity directly supports families in need and creates real, lasting impact in our community.
+                                            <br><br>
+                                            Your funds are now part of our Global Aid Pool and will be used to provide essential items 
+                                            like food, medicine, baby care products, and educational supplies to verified beneficiaries.
+                                            <br><br>
+                                            <em>You'll receive detailed updates when your contribution helps someone.</em>
+                                        </p>
+                                        <i class="fas fa-quote-right" style="opacity: 0.3; float: right;"></i>
+                                    </div>
+                                    <div class="message-footer">
+                                        <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                            <i class="fas fa-heart" style="color: #ef4444;"></i> From the Helping Hands Team
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Usage Message
+                    const itemName = t.item || 'Essential Items';
+                    const beneficiary = t.beneficiary || 'A beneficiary';
+
+                    return `
+                        <div class="message-card usage" style="animation-delay: ${delay}s">
+                            <div style="display: flex; gap: 1rem;">
+                                <div class="message-icon usage-icon">
+                                    <i class="fas fa-shopping-bag"></i>
+                                </div>
+                                <div style="flex: 1;">
+                                    <div class="message-header">
+                                        <div>
+                                            <h3 style="margin: 0; color: #ef4444;">Funds Utilized</h3>
+                                            <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                                <i class="fas fa-clock"></i> ${t.date}
+                                            </div>
+                                        </div>
+                                        <div class="amount-badge amount-usage">
+                                            -$${t.amount}
+                                        </div>
+                                    </div>
+                                    <div class="message-body">
+                                        <i class="fas fa-quote-left" style="opacity: 0.3;"></i>
+                                        <p style="margin: 0.5rem 0;">
+                                            <strong>Impact Update for Our Sponsors,</strong><br><br>
+                                            Your contribution of <strong>$${t.amount}</strong> has just been used to provide 
+                                            <strong>${itemName}</strong> to <strong>${beneficiary}</strong>, a verified member of our care program.
+                                            <br><br>
+                                            This transaction was verified by our volunteer team and directly addresses an immediate need. 
+                                            Your generosity is creating real change in someone's life today.
+                                            <br><br>
+                                            <em>Thank you for making this possible! 🙏</em>
+                                        </p>
+                                        <i class="fas fa-quote-right" style="opacity: 0.3; float: right;"></i>
+                                    </div>
+                                    <div class="message-footer">
+                                        <div style="color: var(--text-muted); font-size: 0.875rem;">
+                                            <i class="fas fa-check-circle" style="color: #10b981;"></i> Verified Transaction
+                                        </div>
+                                        <div style="font-size: 0.875rem; color: var(--text-muted);">
+                                            Beneficiary: <strong>${beneficiary}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+        });
+    </script>
+</body>
+
+</html>

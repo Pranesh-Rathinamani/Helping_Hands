@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Service Certificate - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cert-gold: #b59458;
+            --cert-blue: #0f172a;
+            --cert-bg: #fffcf8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #1e293b;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .certificate-container {
+            width: 1056px;
+            height: 816px;
+            background: var(--cert-bg);
+            border: 25px solid var(--cert-blue);
+            padding: 0;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .cert-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25rem;
+            color: rgba(181, 148, 88, 0.03);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .cert-seal-holo {
+            position: absolute;
+            bottom: 80px;
+            right: 80px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b59458, #ffcc33);
+            border-radius: 50%;
+            border: 4px double #fff;
+            box-shadow: 0 10px 30px rgba(181, 148, 88, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.7rem;
+            text-align: center;
+            font-weight: 900;
+            transform: rotate(-10deg);
+            z-index: 5;
+            background-size: 200% 200%;
+            animation: holo-shine 5s linear infinite;
+        }
+
+        @keyframes holo-shine {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .certificate-container::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid var(--cert-gold);
+            pointer-events: none;
+        }
+
+        .content {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 80px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            color: var(--cert-blue);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-align: center;
+        }
+
+        .subtitle {
+            font-size: 1rem;
+            color: var(--cert-gold);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-top: 10px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .presented-to {
+            font-size: 1.25rem;
+            font-style: italic;
+            margin-top: 40px;
+            color: #64748b;
+            text-align: center;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            color: var(--cert-blue);
+            border-bottom: 2px solid var(--cert-gold);
+            display: inline-block;
+            margin: 0 auto;
+            padding: 0 60px;
+            text-align: center;
+        }
+
+        .description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 30px auto;
+            color: #475569;
+            text-align: center;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 40px;
+            padding: 0 40px;
+        }
+
+        .signature-box {
+            text-align: center;
+            border-top: 1px solid var(--cert-blue);
+            width: 220px;
+            padding-top: 10px;
+        }
+
+        .sig-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            color: var(--cert-blue);
+        }
+
+        .sig-lab {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .back-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            color: var(--cert-blue);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-primary {
+            background: var(--cert-blue);
+            color: white;
+        }
+
+        @media print {
+            .controls {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .certificate-container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back-control">
+        <a href="medical.html" class="btn"><i class="fas fa-arrow-left"></i> Go Back</a>
+    </div>
+
+    <div class="controls">
+        <button class="btn btn-primary" onclick="window.print()">
+            <i class="fas fa-print"></i> Print Certificate
+        </button>
+        <button class="btn" onclick="window.history.back()">
+            <i class="fas fa-arrow-left"></i> Back to Profile
+        </button>
+    </div>
+
+    <div class="certificate-container">
+        <div class="cert-watermark"><i class="fas fa-hand-holding-medical"></i></div>
+        <div class="cert-seal-holo">OFFICIAL<br>VERIFIED<br>SERVICE</div>
+
+        <div class="content">
+            <div class="header">
+                <div style="font-size: 2.5rem; color: var(--cert-blue); margin-bottom: 10px; text-align: center;"><i
+                        class="fas fa-heartbeat"></i></div>
+                <h1>Certificate of Excellence</h1>
+                <div class="subtitle">Medical Volunteer Service Engagement</div>
+            </div>
+
+            <div style="text-align: center;">
+                <div class="presented-to">This prestigious award is proudly conferred upon</div>
+                <div class="name" id="certName">John Doe</div>
+
+                <div class="description">
+                    In deep appreciation for your unwavering commitment and extraordinary service as a health advocate
+                    within the <strong>Helping Hands Social Impact Ecosystem</strong>. Your contributions towards
+                    community health equity have been exemplary.
+                </div>
+            </div>
+
+            <div class="footer">
+                <div class="signature-box">
+                    <div class="sig-text">Helping Hands Team</div>
+                    <div class="sig-lab">Platform Director</div>
+                </div>
+                <div style="text-align: center;">
+                    <img id="certQR" src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=VERIFIED"
+                        style="opacity: 0.7; filter: grayscale(1);">
+                    <div style="font-size: 0.6rem; color: #94a3b8; margin-top: 5px;" id="certID">HH-CERT-000000</div>
+                </div>
+                <div class="signature-box">
+                    <div class="sig-text">Board of Ethics</div>
+                    <div class="sig-lab">Medical Supervisor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const urlName = params.get('name');
+
+            let user = App.Auth.getCurrentUser();
+
+            if (urlName) {
+                user = {
+                    name: urlName,
+                    medicalStats: { tasks: 12, hours: 24 }
+                };
+            } else if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const medStats = user.medicalStats || { tasks: 0, hours: 0 };
+
+            document.getElementById('certName').textContent = user.name;
+            document.getElementById('certID').textContent = 'VERIFY ID: ' + Math.random().toString(36).substr(2, 9).toUpperCase();
+            document.getElementById('certQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=VERIFIED-${encodeURIComponent(user.name)}`;
+        });
+    </script>
+</body>
+
+</html>

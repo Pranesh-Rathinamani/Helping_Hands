@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clinical Service Transcript - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Montserrat:wght@400;700&family=Roboto+Mono&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --medical-blue: #0f172a;
+            --medical-accent: #0891b2;
+            --bg-light: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            background: #1e293b;
+            font-family: 'Montserrat', sans-serif;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        .transcript-page {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 70px;
+            box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+            border-top: none;
+        }
+
+        .trans-sidebar-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--medical-blue), var(--medical-accent));
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 3px solid var(--medical-blue);
+            padding-bottom: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .logo-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.25rem;
+        }
+
+        .logo-area h1 {
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            color: var(--medical-blue);
+        }
+
+        .logo-area p {
+            margin: 0;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .transcript-title {
+            text-align: right;
+        }
+
+        .trans-badge {
+            background: var(--medical-blue);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+        }
+
+        .transcript-id {
+            font-family: 'Roboto Mono', monospace;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 10px;
+        }
+
+        .section {
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--medical-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .trans-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+        }
+
+        .info-item {
+            margin-bottom: 1rem;
+        }
+
+        .info-label {
+            font-size: 0.65rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+            display: block;
+        }
+
+        .info-value {
+            font-weight: 700;
+            font-size: 1rem;
+            color: var(--medical-blue);
+        }
+
+        .stats-box {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .stat-val {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--medical-accent);
+        }
+
+        .stat-lab {
+            font-size: 0.6rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .log-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .log-table th,
+        .log-table td {
+            text-align: left;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .log-table th {
+            background: var(--bg-light);
+            color: var(--medical-blue);
+            font-weight: 800;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+
+        .competency-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+
+        .competency-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            padding: 1rem;
+            background: var(--bg-light);
+            border-radius: 8px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .competency-item:hover {
+            border-color: var(--medical-accent);
+        }
+
+        .competency-item i {
+            color: var(--medical-accent);
+        }
+
+        .footer-endorsement {
+            margin-top: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f1f5f9;
+            padding-top: 2rem;
+        }
+
+        .signature-box {
+            text-align: center;
+        }
+
+        .sig-box-inner {
+            font-family: 'Cinzel', serif;
+            font-size: 1rem;
+            color: #0f172a;
+            margin-bottom: 5px;
+        }
+
+        .sig-line {
+            width: 220px;
+            border-top: 1px solid #cbd5e1;
+            margin: 10px auto;
+        }
+
+        .sig-sub {
+            font-size: 0.6rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .back-control {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 50px;
+            background: white;
+            color: var(--medical-blue);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .transcript-page {
+                box-shadow: none;
+                padding: 40px;
+            }
+
+            .controls {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="back-control">
+        <a href="medical.html" class="btn"><i class="fas fa-arrow-left"></i> Go Back</a>
+    </div>
+
+    <div class="controls">
+        <button class="btn" style="background: var(--medical-blue); color: white;" onclick="window.print()"><i
+                class="fas fa-print"></i> Print Transcript</button>
+        <button class="btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+
+    <div class="transcript-page">
+        <div class="trans-sidebar-stripe"></div>
+        <div class="header">
+            <div class="logo-area">
+                <h1>Helping Hands</h1>
+                <p>Clinical Community Outreach Program</p>
+            </div>
+            <div class="transcript-title">
+                <div class="trans-badge">Official Record</div>
+                <p class="transcript-id" id="transcriptId">LOG-MED-000000</p>
+            </div>
+        </div>
+
+        <div class="trans-grid">
+            <div class="section">
+                <h3 class="section-title"><i class="fas fa-user-circle"></i> Practitioner Profile</h3>
+                <div class="info-item">
+                    <span class="info-label">Full Name</span>
+                    <span class="info-value" id="userName">John Doe</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">License / Status</span>
+                    <span class="info-value">Verified Medical Student</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">University / Institution</span>
+                    <span class="info-value" id="userInstitution">State Medical College</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3 class="section-title"><i class="fas fa-chart-line"></i> Performance Summary</h3>
+                <div class="stats-box">
+                    <div>
+                        <div class="stat-val" id="totalHours">24</div>
+                        <div class="stat-lab">Total Hrs</div>
+                    </div>
+                    <div>
+                        <div class="stat-val" id="patientCount">4</div>
+                        <div class="stat-lab">Cases</div>
+                    </div>
+                    <div>
+                        <div class="stat-val" id="academicCredits">2.4</div>
+                        <div class="stat-lab">Units</div>
+                    </div>
+                </div>
+                <div class="info-item" style="margin-top: 1.5rem;">
+                    <span class="info-label">Enrollment Date</span>
+                    <span class="info-value" id="enrollmentDate">Jan 20, 2026</span>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h3 class="section-title"><i class="fas fa-clipboard-list"></i> Clinical Activity Log</h3>
+            <table class="log-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Case ID</th>
+                        <th>Scope of Care</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="caseLog"></tbody>
+            </table>
+        </section>
+
+        <section class="section">
+            <h3 class="section-title"><i class="fas fa-check-double"></i> Competency Endorsement</h3>
+            <div class="competency-grid">
+                <div class="competency-item"><i class="fas fa-check-circle"></i> Basic First Aid Protocols</div>
+                <div class="competency-item"><i class="fas fa-check-circle"></i> Vital Signs Assessment</div>
+                <div class="competency-item"><i class="fas fa-check-circle"></i> Community Health Education</div>
+                <div class="competency-item"><i class="fas fa-check-circle"></i> HIPAA Compliance</div>
+            </div>
+        </section>
+
+        <div class="footer-endorsement">
+            <div class="signature-box">
+                <div class="sig-box-inner">HH BOARD ENDORSED</div>
+                <div class="sig-line"></div>
+                <div class="sig-sub">Program Director</div>
+            </div>
+            <div class="signature-box" style="text-align: center;">
+                <img id="transQR" src="https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=VERIFIED"
+                    alt="Verification QR">
+                <div class="sig-sub" style="margin-top: 5px;">Digital Verification</div>
+            </div>
+            <div class="signature-box">
+                <div class="sig-line" style="margin-top: 25px;"></div>
+                <div class="sig-sub">Academic Supervisor</div>
+            </div>
+        </div>
+    </div>
+
+    <p style="margin-top: 3rem; font-size: 0.7rem; color: #64748b; text-align: center;">
+        This document is an official record of clinical practice hours performed on the Helping Hands platform.
+        For verification, contact clinical@helpinghands.ngo citing the ID at the top.
+    </p>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const urlName = params.get('name');
+
+            let user = App.Auth.getCurrentUser();
+
+            if (urlName) {
+                // Anonymous generation mode
+                user = {
+                    name: urlName,
+                    id: 'ANON-' + Date.now(),
+                    medicalStats: { tasks: 12, hours: 24, cases: 4 },
+                    registeredAt: new Date().toLocaleDateString()
+                };
+            } else if (!user) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            const medStats = user.medicalStats || { tasks: 0, hours: 0 };
+            const transcriptIdSuffix = user.id.toString().slice(-6);
+
+            document.getElementById('userName').textContent = user.name;
+            document.getElementById('transcriptId').textContent = 'UID: HH-CLIN-' + Date.now().toString().slice(-6);
+            document.getElementById('transQR').src = `https://api.qrserver.com/v1/create-qr-code/?size=60x60&data=VERIFIED-${encodeURIComponent(user.name)}`;
+
+            const hours = medStats.hours || 24;
+            document.getElementById('totalHours').textContent = hours;
+            document.getElementById('academicCredits').textContent = (hours / 10).toFixed(1);
+            document.getElementById('enrollmentDate').textContent = user.registeredAt || 'Jan 20, 2026';
+
+            if (user.institution) document.getElementById('userInstitution').textContent = user.institution;
+
+            // Generate Mock Case Logs for the student
+            const caseLog = document.getElementById('caseLog');
+            const sampleCases = [
+                { id: 'BG-7721', care: 'Basic Health Screening', status: 'Stable' },
+                { id: 'BG-1102', care: 'Nutritional Assessment', status: 'Improving' },
+                { id: 'BG-9923', care: 'First Aid Treatment', status: 'Resolved' },
+                { id: 'BG-4432', care: 'Chronic Condition Monitor', status: 'Under Observation' }
+            ];
+
+            document.getElementById('patientCount').textContent = sampleCases.length + ' Active Cases';
+
+            caseLog.innerHTML = sampleCases.map(c => `
+                <tr>
+                    <td>${new Date().toLocaleDateString()}</td>
+                    <td>${c.id}</td>
+                    <td>${c.care}</td>
+                    <td><strong>${c.status}</strong></td>
+                </tr>
+            `).join('');
+        });
+    </script>
+</body>
+
+</html>

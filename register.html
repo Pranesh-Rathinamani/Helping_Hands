@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join Us - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <!-- Google Sign-In -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <style>
+        .split-screen {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg-primary);
+        }
+
+        .split-left {
+            flex: 1;
+            background: linear-gradient(135deg, #10b981 0%, #0891b2 50%, #5b21b6 100%);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .split-left::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -300px;
+            left: -300px;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 600px;
+        }
+
+        .hero-icon {
+            font-size: 5rem;
+            color: white;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .hero-title {
+            font-size: 3rem;
+            font-weight: 900;
+            color: white;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            font-family: var(--font-heading);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+            animation: slideUp 1s ease-out;
+        }
+
+        .hero-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 3rem;
+            animation: slideUp 1.2s ease-out;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feature-item i {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-item h3 {
+            font-size: 1.125rem;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .feature-item p {
+            font-size: 0.875rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .split-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+            background: var(--bg-primary);
+        }
+
+        .register-container {
+            width: 100%;
+            max-width: 520px;
+            animation: slideInRight 0.8s ease-out;
+        }
+
+        .register-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            padding: 3rem;
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .register-title {
+            font-size: 2rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .register-subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2.5rem;
+            font-size: 1.125rem;
+        }
+
+        .password-strength {
+            margin-top: 0.5rem;
+        }
+
+        .strength-bar {
+            height: 4px;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .strength-fill {
+            height: 100%;
+            width: 0%;
+            transition: all var(--transition-base);
+            border-radius: 2px;
+        }
+
+        .strength-fill.weak {
+            width: 33%;
+            background: #ef4444;
+        }
+
+        .strength-fill.medium {
+            width: 66%;
+            background: #fbbf24;
+        }
+
+        .strength-fill.strong {
+            width: 100%;
+            background: #10b981;
+        }
+
+        .strength-text {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .terms-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            margin-top: 1.5rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .terms-box i {
+            color: var(--neon-purple);
+            margin-top: 0.125rem;
+        }
+
+        .role-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .role-btn {
+            padding: 1rem;
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.2);
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all var(--transition-base);
+            text-align: center;
+        }
+
+        .role-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .role-btn.active {
+            background: var(--gradient-primary);
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .role-btn i {
+            font-size: 1.5rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--neon-purple);
+        }
+
+        .role-btn.active i {
+            color: white;
+        }
+
+        .role-btn span {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .role-btn.active span {
+            color: white;
+        }
+
+        .social-login {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(139, 92, 246, 0.2);
+        }
+
+        .social-btn {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: var(--radius-sm);
+            color: var(--text-primary);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .social-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--neon-purple);
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .divider span {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        @media (max-width: 968px) {
+            .split-screen {
+                flex-direction: column;
+            }
+
+            .split-left {
+                min-height: 50vh;
+                padding: 2rem;
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.125rem;
+            }
+
+            .hero-features {
+                grid-template-columns: 1fr;
+            }
+
+            .split-right {
+                padding: 2rem;
+            }
+
+            .role-selector {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="split-screen">
+        <!-- Left Side: Hero Content -->
+        <div class="split-left">
+            <div class="hero-content">
+                <div class="hero-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h1 class="hero-title">Join the Movement</h1>
+                <p class="hero-subtitle">Become a verified volunteer and create real, measurable impact</p>
+
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <i class="fas fa-qrcode"></i>
+                        <h3>QR Verification</h3>
+                        <p>Scan & verify every action for 100% transparency</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-trophy"></i>
+                        <h3>Earn Rewards</h3>
+                        <p>Get badges, certificates, and real-world prizes</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Track Impact</h3>
+                        <p>See your contribution in real-time analytics</p>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <h3>Verified Tasks</h3>
+                        <p>Every task is validated and fraud-proof</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Registration Form -->
+        <div class="split-right">
+            <div class="register-container">
+                <div class="register-card">
+                    <h1 class="register-title">Create Account</h1>
+                    <p class="register-subtitle">Start making a difference today</p>
+
+                    <!-- Role Selector (Now only Volunteer and Sponsor) -->
+                    <div class="role-selector">
+                        <div class="role-btn active" data-role="Volunteer">
+                            <i class="fas fa-user-friends"></i>
+                            <span>Volunteer</span>
+                        </div>
+                        <div class="role-btn" data-role="Sponsor">
+                            <i class="fas fa-hand-holding-usd"></i>
+                            <span>Sponsor</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mother with Newborn Feature -->
+                <div id="mother-check-container"
+                    style="margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; padding: 0.75rem; background: rgba(16, 185, 129, 0.1); border-radius: var(--radius-sm); border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <input type="checkbox" id="isNewBornMother" name="isNewBornMother"
+                        style="width: 1.2rem; height: 1.2rem; accent-color: var(--primary);">
+                    <label for="isNewBornMother"
+                        style="font-size: 0.9rem; color: var(--text-primary); cursor: pointer;">
+                        I am a Mother with a Newborn <span style="font-size: 0.8rem; color: var(--text-muted);">(Enables
+                            Care Support)</span>
+                    </label>
+                </div>
+
+                <form onsubmit="event.preventDefault(); handleRegister(this);">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Address</label>
+                        <input type="email" name="email" class="form-input" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" name="password" id="password" class="form-input" placeholder="••••••••"
+                            required>
+                        <div class="password-strength">
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill"></div>
+                            </div>
+                            <div class="strength-text" id="strengthText">Enter a password</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" name="confirmPassword" class="form-input" placeholder="••••••••"
+                            required>
+                    </div>
+
+                    <div class="terms-box">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            By signing up, you agree to verify tasks honestly and uphold the dignity of all
+                            beneficiaries.
+                            Together, we create transparent impact.
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-full" style="margin-top: 1.5rem;">
+                        <i class="fas fa-user-plus"></i>
+                        Create Account
+                    </button>
+                </form>
+
+                <div class="divider">
+                    <span>OR</span>
+                </div>
+
+                <button class="social-btn" onclick="handleGoogleSignUp()">
+                    <i class="fab fa-google"></i>
+                    Sign up with Google
+                </button>
+
+                <div style="margin-top: 2rem; text-align: center; font-size: 0.9rem;">
+                    <span style="color: var(--text-muted);">Already have an account?</span>
+                    <a href="index.html" style="color: var(--neon-purple); font-weight: 600; margin-left: 0.5rem;">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        // Password strength indicator
+        const passwordInput = document.getElementById('password');
+        const strengthFill = document.getElementById('strengthFill');
+        const strengthText = document.getElementById('strengthText');
+
+        passwordInput.addEventListener('input', function () {
+            const password = this.value;
+            let strength = 0;
+
+            if (password.length >= 8) strength++;
+            if (password.match(/[a-z]/) && password.match(/[A-Z]/)) strength++;
+            if (password.match(/[0-9]/)) strength++;
+            if (password.match(/[^a-zA-Z0-9]/)) strength++;
+
+            strengthFill.className = 'strength-fill';
+
+            if (strength === 0) {
+                strengthText.textContent = 'Enter a password';
+            } else if (strength <= 2) {
+                strengthFill.classList.add('weak');
+                strengthText.textContent = 'Weak password';
+                strengthText.style.color = '#ef4444';
+            } else if (strength === 3) {
+                strengthFill.classList.add('medium');
+                strengthText.textContent = 'Medium strength';
+                strengthText.style.color = '#fbbf24';
+            } else {
+                strengthFill.classList.add('strong');
+                strengthText.textContent = 'Strong password!';
+                strengthText.style.color = '#10b981';
+            }
+        });
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const preRole = urlParams.get('role');
+        if (preRole) {
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                if (btn.dataset.role === preRole) {
+                    document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // Role selector
+        document.querySelectorAll('.role-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        // Registration handler
+        function handleRegister(form) {
+            const name = form.name.value;
+            const email = form.email.value;
+            const password = form.password.value;
+            const confirmPassword = form.confirmPassword.value;
+            const role = document.querySelector('.role-btn.active').dataset.role;
+            const isNewBornMother = document.getElementById('isNewBornMother').checked;
+
+            if (password !== confirmPassword) {
+                alert('Passwords do not match!');
+                return;
+            }
+
+            // Show loading
+            const submitBtn = form.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<div class="loading-dots"><span></span><span></span><span></span></div>';
+            submitBtn.disabled = true;
+
+            // Simulate loading then redirect to onboarding
+            setTimeout(() => {
+                // Determine if it should be tagged as medical volunteer
+                const isMedFromUrl = new URLSearchParams(window.location.search).get('role') === 'MedicalVolunteer';
+                const finalRole = (role === 'MedicalVolunteer' || isMedFromUrl) ? 'Volunteer' : role;
+
+                App.Auth.signUp(name, email, password, finalRole, isNewBornMother);
+
+                // Explicitly set medical flag if needed
+                if (isMedFromUrl || role === 'MedicalVolunteer') {
+                    const users = JSON.parse(localStorage.getItem('hh_users') || '[]');
+                    const idx = users.findIndex(u => u.email === email);
+                    if (idx !== -1) {
+                        users[idx].isMedicalVolunteer = true;
+                        localStorage.setItem('hh_users', JSON.stringify(users));
+                        // ALSO update current user session
+                        localStorage.setItem('hh_currentUser', JSON.stringify(users[idx]));
+                    }
+                }
+
+                // After signup, redirect to onboarding
+                localStorage.setItem('hh_showOnboarding', 'true');
+            }, 800);
+        }
+
+        // Google Sign-Up handler
+        function handleGoogleSignUp() {
+            // Mock Google Sign-In for demo purposes
+            const mockGoogleUser = {
+                name: 'Demo User (Google)',
+                email: 'demo.google@helpinghands.org',
+                password: 'google-oauth-' + Date.now(),
+                role: document.querySelector('.role-btn.active').dataset.role,
+                googleAuth: true
+            };
+
+            // Check if user already exists
+            const users = JSON.parse(localStorage.getItem('hh_users') || '[]');
+            const existingUser = users.find(u => u.email === mockGoogleUser.email);
+
+            if (existingUser) {
+                alert('This Google account is already registered. Redirecting to login...');
+                window.location.href = 'index.html';
+            } else {
+                // Create new Google user
+                App.Auth.signUp(mockGoogleUser.name, mockGoogleUser.email, mockGoogleUser.password, mockGoogleUser.role);
+                localStorage.setItem('hh_showOnboarding', 'true');
+            }
+
+            // Note: In production, replace above with actual Google Sign-In:
+            // google.accounts.id.initialize({
+            //     client_id: 'YOUR_GOOGLE_CLIENT_ID',
+            //     callback: handleGoogleCallback
+            // });
+            // google.accounts.id.prompt();
+        }
+    </script>
+</body>
+
+</html>

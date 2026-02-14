@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .community-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--glass-border);
+        }
+
+        .tab {
+            padding: 1rem 2rem;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .tab.active {
+            color: var(--neon-purple);
+            border-bottom-color: var(--neon-purple);
+        }
+
+        .tab:hover {
+            color: var(--neon-purple);
+        }
+
+        /* Posts Feed Styles */
+        .post-create {
+            background: var(--glass-bg);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .post-card {
+            background: var(--glass-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--glass-border);
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .post-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.25rem;
+        }
+
+        .post-content {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .post-image {
+            width: 100%;
+            border-radius: var(--radius-sm);
+            margin: 1rem 0;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 1.5rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .action-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .action-btn:hover {
+            background: rgba(139, 92, 246, 0.1);
+            color: var(--neon-purple);
+        }
+
+        .action-btn.liked {
+            color: #ef4444;
+        }
+
+        .comments-section {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .comment {
+            background: rgba(139, 92, 246, 0.05);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.5rem;
+        }
+
+        /* Chat Styles */
+        .chat-layout {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 200px);
+        }
+
+        .chat-sidebar {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-main {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .contact-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-item:hover,
+        .contact-item.active {
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .contact-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--gradient-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .status-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2px solid white;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .messages-area {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: rgba(248, 250, 252, 0.5);
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 1rem 1.25rem;
+            border-radius: 20px;
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+            line-height: 1.5;
+            font-size: 0.9375rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .message.received {
+            align-self: flex-start;
+            background: white;
+            color: var(--text-dark);
+            border-bottom-left-radius: 4px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+            border: none;
+            box-shadow: var(--shadow-glow);
+        }
+
+        .chat-input-area {
+            padding: 1rem;
+            background: white;
+            border-top: 1px solid var(--glass-border);
+            display: flex;
+            gap: 1rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 2rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .chat-input:focus {
+            border-color: var(--neon-purple);
+            box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+        }
+
+        .btn-send {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: var(--gradient-primary);
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .btn-send:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <header class="mb-4">
+                <h1 class="animate-slideUp">Community Hub</h1>
+                <p class="animate-slideUp">Connect, share, and inspire through posts and messages.</p>
+            </header>
+
+            <!-- Tabs -->
+            <div class="community-tabs">
+                <div class="tab active" onclick="switchTab('posts')">
+                    <i class="fas fa-images"></i> Posts
+                </div>
+                <div class="tab" onclick="switchTab('chat')">
+                    <i class="fas fa-comments"></i> Messages
+                </div>
+            </div>
+
+            <div class="tab-content" id="messagesTab" style="display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h3><i class="fas fa-envelope"></i> Messages</h3>
+                    <button class="btn btn-primary" onclick="openEmailModal()">
+                        <i class="fas fa-paper-plane"></i> Send Email
+                    </button>
+                </div>
+
+                <div id="messagesList">
+                </div>
+            </div>
+
+            <!-- Posts Section -->
+            <div id="posts-section">
+                <!-- Create Post -->
+                <div class="post-create">
+                    <textarea id="postInput" class="form-input" rows="3"
+                        placeholder="Share your impact story, volunteer experience, or inspire others..."></textarea>
+                    <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+                        <button class="btn btn-outline" onclick="document.getElementById('photoInput').click()">
+                            <i class="fas fa-image"></i> Photo
+                        </button>
+                        <input type="file" id="photoInput" accept="image/*" style="display: none;"
+                            onchange="previewPhoto(event)">
+                        <div style="flex: 1;"></div>
+                        <button class="btn btn-primary" onclick="createPost()">
+                            <i class="fas fa-paper-plane"></i> Share Post
+                        </button>
+                    </div>
+                    <div id="photoPreview" style="margin-top: 1rem;"></div>
+                </div>
+
+                <!-- Posts Feed -->
+                <div id="posts-feed">
+                    <!-- Posts will be loaded here -->
+                </div>
+            </div>
+
+            <!-- Chat Section -->
+            <div id="chat-section" style="display: none;">
+                <div class="chat-layout">
+                    <!-- Sidebar -->
+                    <div class="chat-sidebar">
+                        <div style="padding: 1rem; border-bottom: 1px solid var(--glass-border);">
+                            <input type="text" placeholder="Search people..." class="form-input"
+                                style="border-radius: 2rem; padding-left: 1rem;">
+                        </div>
+                        <div class="contact-list" id="contact-list">
+                            <!-- Contacts injected here -->
+                        </div>
+                    </div>
+
+                    <!-- Main Chat -->
+                    <div class="chat-main">
+                        <div class="chat-header">
+                            <div class="flex items-center gap-3">
+                                <div class="contact-avatar" id="active-avatar">?</div>
+                                <div>
+                                    <h3 id="active-name" style="margin:0;">Select a contact</h3>
+                                    <div style="font-size: 0.8rem; color:#10b981;">Online</div>
+                                </div>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="btn btn-outline" onclick="saveContact()" title="Save Contact"><i
+                                        class="fas fa-user-plus"></i></button>
+                                <button class="btn btn-outline" title="Email"><i class="fas fa-envelope"></i></button>
+                                <button class="btn btn-outline" title="Phone"><i class="fas fa-phone"></i></button>
+                            </div>
+                        </div>
+
+                        <div class="messages-area" id="messages-area">
+                            <div style="text-align: center; color: var(--text-muted); margin-top: 2rem;">
+                                Start a conversation to coordinate tasks and help together.
+                            </div>
+                        </div>
+
+                        <div class="chat-input-area">
+                            <input type="text" id="messageInput" class="chat-input" placeholder="Type a message..."
+                                onkeypress="handleKeyPress(event)">
+                            <button class="btn-send" onclick="sendMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Email Modal -->
+    <div id="emailModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 1000; align-items: center; justify-content: center;">
+        <div class="card" style="max-width: 600px; width: 90%; margin: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                <h2><i class="fas fa-envelope"></i> Send Email</h2>
+                <button class="btn-icon" onclick="closeEmailModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <form onsubmit="event.preventDefault(); sendEmail(this);">
+                <div class="form-group">
+                    <label class="form-label">To (Email Address) *</label>
+                    <input type="email" name="toEmail" class="form-input" placeholder="user@example.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Subject *</label>
+                    <input type="text" name="subject" class="form-input" placeholder="Email subject" required>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Message *</label>
+                    <textarea name="message" class="form-input" rows="6" placeholder="Type your message..."
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-full">
+                    <i class="fas fa-paper-plane"></i> Send Email
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        let currentChatId = null;
+        let selectedPhoto = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDefaultPosts();
+            loadPosts();
+            loadContacts();
+        });
+
+        function initializeDefaultPosts() {
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+
+            // Only add default posts if none exist
+            if (posts.length === 0) {
+                const defaultPosts = [
+                    {
+                        id: Date.now() - 86400000 * 3, // 3 days ago
+                        author: 'Sarah Johnson',
+                        authorEmail: 'sarah.j@volunteer.com',
+                        text: 'Just spent an amazing afternoon helping Mrs. Rodriguez organize her home! She was so grateful and even shared her homemade cookies with me. 🍪 This is why I volunteer - the connections we make are priceless! ❤️',
+                        photo: null,
+                        likes: 24,
+                        likedBy: ['admin@hh.com', 'demo.google@helpinghands.org'],
+                        comments: [
+                            { author: 'Pranesh R', text: 'Beautiful work Sarah! Keep spreading kindness! 🌟', time: '2:15 PM' },
+                            { author: 'Mark Chen', text: 'This is so inspiring! I want to help too!', time: '3:45 PM' }
+                        ],
+                        shares: 5,
+                        timestamp: new Date(Date.now() - 86400000 * 3).toISOString()
+                    },
+                    {
+                        id: Date.now() - 86400000 * 2, // 2 days ago
+                        author: 'Pranesh R',
+                        authorEmail: 'admin@hh.com',
+                        text: '🎉 HUGE MILESTONE! We just reached 1000 volunteer hours as a community! Every single one of you has made this possible. Together, we\'ve impacted 250+ families and counting. This is just the beginning! 💪🌈',
+                        photo: null,
+                        likes: 87,
+                        likedBy: ['sarah.j@volunteer.com', 'demo.google@helpinghands.org', 'admin@hh.com'],
+                        comments: [
+                            { author: 'Emma Davis', text: 'So proud to be part of this amazing community! 🙌', time: '9:30 AM' },
+                            { author: 'James Wilson', text: 'Can\'t wait to see what we accomplish next!', time: '10:15 AM' },
+                            { author: 'Sarah Johnson', text: 'Best team ever! ❤️', time: '11:00 AM' }
+                        ],
+                        shares: 15,
+                        timestamp: new Date(Date.now() - 86400000 * 2).toISOString()
+                    },
+                    {
+                        id: Date.now() - 86400000, // 1 day ago
+                        author: 'Michael Torres',
+                        authorEmail: 'michael.t@volunteer.com',
+                        text: 'Today I met Ram, a 65-year-old man struggling with daily tasks. After helping him get groceries and organizing his medicines, I saw tears of joy in his eyes. He said "You reminded me that people still care." My heart is so full right now. 🙏',
+                        photo: null,
+                        likes: 56,
+                        likedBy: ['admin@hh.com', 'sarah.j@volunteer.com'],
+                        comments: [
+                            { author: 'Pranesh R', text: 'Michael, you\'re making a real difference! Thank you! 🌟', time: '4:20 PM' },
+                            { author: 'Lisa Anderson', text: 'This brought tears to my eyes. Beautiful! 😢❤️', time: '5:30 PM' }
+                        ],
+                        shares: 8,
+                        timestamp: new Date(Date.now() - 86400000).toISOString()
+                    },
+                    {
+                        id: Date.now() - 43200000, // 12 hours ago
+                        author: 'Emma Davis',
+                        authorEmail: 'emma.d@volunteer.com',
+                        text: '📚 Just finished conducting a tutoring session with 10 kids from underprivileged backgrounds. Their eagerness to learn and bright smiles made my entire week! Education truly is the key to breaking the cycle. Who wants to join me next Saturday?',
+                        photo: null,
+                        likes: 42,
+                        likedBy: ['admin@hh.com', 'michael.t@volunteer.com'],
+                        comments: [
+                            { author: 'Sarah Johnson', text: 'Count me in! I\'d love to help! 📖', time: '8:45 AM' },
+                            { author: 'Pranesh R', text: 'Amazing initiative Emma! I\'ll share this with more volunteers!', time: '9:10 AM' }
+                        ],
+                        shares: 12,
+                        timestamp: new Date(Date.now() - 43200000).toISOString()
+                    },
+                    {
+                        id: Date.now() - 7200000, // 2 hours ago
+                        author: 'Alex Martinez',
+                        authorEmail: 'alex.m@volunteer.com',
+                        text: 'Reminder: Tomorrow we have a community clean-up drive at Central Park! 🌳 Let\'s make our neighborhood beautiful together. Meeting at 7 AM sharp. Bring gloves and positive energy! See you all there! 💚',
+                        photo: null,
+                        likes: 31,
+                        likedBy: ['emma.d@volunteer.com', 'admin@hh.com'],
+                        comments: [
+                            { author: 'Michael Torres', text: 'I\'ll be there with my family! 👨‍👩‍👧', time: 'Just now' }
+                        ],
+                        shares: 6,
+                        timestamp: new Date(Date.now() - 7200000).toISOString()
+                    }
+                ];
+
+                localStorage.setItem('hh_posts', JSON.stringify(defaultPosts));
+            }
+        }
+
+        function switchTab(tab) {
+            // Update tabs
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.closest('.tab').classList.add('active');
+
+            // Toggle sections
+            document.getElementById('posts-section').style.display = tab === 'posts' ? 'block' : 'none';
+            document.getElementById('chat-section').style.display = tab === 'chat' ? 'block' : 'none';
+        }
+
+        /* ===== POSTS FUNCTIONALITY ===== */
+        function previewPhoto(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    selectedPhoto = e.target.result;
+                    document.getElementById('photoPreview').innerHTML = `
+                        <img src="${selectedPhoto}" style="max-width: 200px; border-radius: var(--radius-sm);">
+                        <button class="btn btn-outline" onclick="removePhoto()" style="margin-left: 1rem;">
+                            <i class="fas fa-times"></i> Remove
+                        </button>
+                    `;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        function removePhoto() {
+            selectedPhoto = null;
+            document.getElementById('photoPreview').innerHTML = '';
+            document.getElementById('photoInput').value = '';
+        }
+
+        function createPost() {
+            const text = document.getElementById('postInput').value.trim();
+            if (!text && !selectedPhoto) {
+                alert('Please write something or add a photo');
+                return;
+            }
+
+            const currentUser = App.Auth.getCurrentUser();
+            const post = {
+                id: Date.now(),
+                author: currentUser.name,
+                authorEmail: currentUser.email,
+                text: text,
+                photo: selectedPhoto,
+                likes: 0,
+                likedBy: [],
+                comments: [],
+                shares: 0,
+                timestamp: new Date().toISOString()
+            };
+
+            // Save post
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+            posts.unshift(post);
+            localStorage.setItem('hh_posts', JSON.stringify(posts));
+
+            // Clear form
+            document.getElementById('postInput').value = '';
+            removePhoto();
+
+            // Reload feed
+            loadPosts();
+            App.Notifications.showToast('Post shared successfully!', 'success');
+            App.Animations.showConfetti();
+        }
+
+        function loadPosts() {
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+            const currentUser = App.Auth.getCurrentUser();
+            const feed = document.getElementById('posts-feed');
+
+            if (posts.length === 0) {
+                feed.innerHTML = `
+                    <div class="card text-center" style="padding: 3rem;">
+                        <i class="fas fa-images" style="font-size: 3rem; color: var(--neon-purple); margin-bottom: 1rem;"></i>
+                        <h3>No posts yet</h3>
+                        <p style="color: var(--text-muted);">Be the first to share your volunteer story!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            feed.innerHTML = posts.map((post, index) => {
+                const isLiked = post.likedBy.includes(currentUser.email);
+                const timeAgo = getTimeAgo(new Date(post.timestamp));
+
+                return `
+                    <div class="post-card">
+                        <div class="post-header">
+                            <div class="post-avatar">${post.author.charAt(0)}</div>
+                            <div style="flex: 1;">
+                                <div style="font-weight: 600;">${post.author}</div>
+                                <div style="font-size: 0.875rem; color: var(--text-muted);">${timeAgo}</div>
+                            </div>
+                        </div>
+
+                        <div class="post-content">${post.text}</div>
+
+                        ${post.photo ? `<img src="${post.photo}" class="post-image" alt="Post image">` : ''}
+
+                        <div class="post-actions">
+                            <button class="action-btn ${isLiked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
+                                <i class="fas fa-heart"></i>
+                                <span id="like-count-${post.id}">${post.likes}</span>
+                            </button>
+                            <button class="action-btn" onclick="toggleComments(${post.id})">
+                                <i class="fas fa-comment"></i>
+                                <span>${post.comments.length}</span>
+                            </button>
+                            <button class="action-btn" onclick="sharePost(${post.id})">
+                                <i class="fas fa-share"></i>
+                                <span id="share-count-${post.id}">${post.shares}</span>
+                            </button>
+                        </div>
+
+                        <div class="comments-section" id="comments-${post.id}" style="display: none;">
+                            <div id="comments-list-${post.id}">
+                                ${post.comments.map(c => `
+                                    <div class="comment">
+                                        <strong>${c.author}:</strong> ${c.text}
+                                        <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">${c.time}</div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                                <input type="text" class="form-input" id="comment-input-${post.id}" placeholder="Write a comment..." style="flex: 1;">
+                                <button class="btn btn-primary" onclick="addComment(${post.id})">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleLike(postId) {
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+            const currentUser = App.Auth.getCurrentUser();
+            const post = posts.find(p => p.id === postId);
+
+            if (!post) return;
+
+            const index = post.likedBy.indexOf(currentUser.email);
+            if (index > -1) {
+                post.likedBy.splice(index, 1);
+                post.likes--;
+            } else {
+                post.likedBy.push(currentUser.email);
+                post.likes++;
+            }
+
+            localStorage.setItem('hh_posts', JSON.stringify(posts));
+            loadPosts();
+        }
+
+        function toggleComments(postId) {
+            const commentsDiv = document.getElementById(`comments-${postId}`);
+            commentsDiv.style.display = commentsDiv.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function addComment(postId) {
+            const input = document.getElementById(`comment-input-${postId}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+            const currentUser = App.Auth.getCurrentUser();
+            const post = posts.find(p => p.id === postId);
+
+            if (!post) return;
+
+            post.comments.push({
+                author: currentUser.name,
+                text: text,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            });
+
+            localStorage.setItem('hh_posts', JSON.stringify(posts));
+            input.value = '';
+            loadPosts();
+            toggleComments(postId); // Show comments
+        }
+
+        function sharePost(postId) {
+            const posts = JSON.parse(localStorage.getItem('hh_posts') || '[]');
+            const post = posts.find(p => p.id === postId);
+            if (!post) return;
+
+            post.shares++;
+            localStorage.setItem('hh_posts', JSON.stringify(posts));
+
+            App.Notifications.showToast('Post shared!', 'success');
+            loadPosts();
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            if (seconds < 3600) return Math.floor(seconds / 60) + ' minutes ago';
+            if (seconds < 86400) return Math.floor(seconds / 3600) + ' hours ago';
+            return Math.floor(seconds / 86400) + ' days ago';
+        }
+
+        /* ===== CHAT FUNCTIONALITY ===== */
+        function loadContacts() {
+            const volunteers = App.Data.getVolunteers();
+            const contacts = [...volunteers, { id: 'SP1', name: 'Pranesh R (Admin)', role: 'Sponsor', email: 'admin@hh.com' }];
+
+            const list = document.getElementById('contact-list');
+            list.innerHTML = contacts.map(c => `
+                <div class="contact-item" onclick="selectContact('${c.email}', '${c.name}')">
+                    <div class="contact-avatar">
+                        ${c.name.charAt(0)}
+                        <span class="status-dot"></span>
+                    </div>
+                    <div>
+                        <div style="font-weight: 600;">${c.name}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">${c.role || 'Volunteer'}</div>
+                    </div>
+                </div>
+             `).join('');
+
+            if (contacts.length > 0) selectContact(contacts[contacts.length - 1].email, contacts[contacts.length - 1].name);
+        }
+
+        function selectContact(email, name) {
+            currentChatId = email;
+            document.getElementById('active-name').textContent = name;
+            document.getElementById('active-avatar').textContent = name.charAt(0);
+            loadMessages(email);
+        }
+
+        function loadMessages(email) {
+            const area = document.getElementById('messages-area');
+            const currentUser = App.Auth.getCurrentUser();
+            const chatKey = `hh_chat_${currentUser.email}_${email}`;
+            const messages = JSON.parse(localStorage.getItem(chatKey) || '[]');
+
+            if (messages.length === 0) {
+                area.innerHTML = `
+                    <div style="text-align: center; color: var(--text-muted); margin-top: 2rem;">
+                        Say hi to ${document.getElementById('active-name').textContent}!
+                    </div>
+                 `;
+            } else {
+                area.innerHTML = messages.map(m => `
+                    <div class="message ${m.sender === currentUser.email ? 'sent' : 'received'}">
+                        ${m.text}
+                        <div style="font-size: 0.6rem; opacity: 0.7; margin-top: 0.25rem;">${m.time}</div>
+                    </div>
+                `).join('');
+            }
+            area.scrollTop = area.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const text = input.value.trim();
+            if (!text || !currentChatId) return;
+
+            const currentUser = App.Auth.getCurrentUser();
+            const msg = {
+                id: Date.now(),
+                text: text,
+                sender: currentUser.email,
+                receiver: currentChatId,
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+
+            const myKey = `hh_chat_${currentUser.email}_${currentChatId}`;
+            const myMsgs = JSON.parse(localStorage.getItem(myKey) || '[]');
+            myMsgs.push(msg);
+            localStorage.setItem(myKey, JSON.stringify(myMsgs));
+
+            input.value = '';
+            loadMessages(currentChatId);
+
+            // Simulate Reply
+            if (currentChatId.includes('admin')) {
+                setTimeout(() => {
+                    const reply = {
+                        id: Date.now() + 1,
+                        text: "Thanks for reaching out! We'll get back to you shortly.",
+                        sender: currentChatId,
+                        receiver: currentUser.email,
+                        time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+                    };
+                    myMsgs.push(reply);
+                    localStorage.setItem(myKey, JSON.stringify(myMsgs));
+                    loadMessages(currentChatId);
+                    App.Notifications.showToast('New message from Admin', 'info');
+                }, 1500);
+            }
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') sendMessage();
+        }
+
+        function saveContact() {
+            App.Notifications.showToast('Contact Saved to your list!', 'success');
+        }
+    </script>
+</body>
+
+</html>

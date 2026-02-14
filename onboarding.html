@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .onboarding-container {
+            min-height: 100vh;
+            background: var(--bg-primary);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skip-btn {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            z-index: 10;
+            padding: 0.75rem 1.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: var(--radius-full);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition-base);
+        }
+
+        .skip-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            color: var(--neon-purple);
+        }
+
+        .slides-container {
+            flex: 1;
+            display: flex;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide {
+            min-width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .slide-icon {
+            font-size: 6rem;
+            margin-bottom: 2rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .slide-icon.gradient-1 {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-icon.gradient-2 {
+            background: var(--gradient-secondary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-icon.gradient-3 {
+            background: var(--gradient-accent);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-icon.gradient-4 {
+            background: var(--gradient-success);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .slide-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1.5rem;
+            max-width: 800px;
+            background: var(--gradient-hero);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-family: var(--font-heading);
+        }
+
+        .slide-description {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        .workflow-diagram {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .workflow-step {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 2rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            min-width: 200px;
+        }
+
+        .workflow-step i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .workflow-arrow {
+            font-size: 2rem;
+            color: var(--neon-purple);
+        }
+
+        .badge-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+            max-width: 800px;
+        }
+
+        .badge-item {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            border: 1px solid var(--glass-border);
+            transition: all var(--transition-base);
+        }
+
+        .badge-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .badge-item i {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .badge-item h4 {
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .badge-item p {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .navigation {
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .progress-dots {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(139, 92, 246, 0.2);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .dot.active {
+            background: var(--neon-purple);
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        @media (max-width: 768px) {
+            .slide-title {
+                font-size: 2rem;
+            }
+
+            .slide-description {
+                font-size: 1rem;
+            }
+
+            .workflow-diagram {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .workflow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .badge-showcase {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="onboarding-container">
+        <button class="skip-btn" onclick="skipOnboarding()">
+            Skip <i class="fas fa-arrow-right"></i>
+        </button>
+
+        <div class="slides-container" id="slidesContainer">
+            <!-- Slide 1: Help Directly -->
+            <div class="slide">
+                <div class="slide-icon gradient-1">
+                    <i class="fas fa-hand-holding-heart"></i>
+                </div>
+                <h1 class="slide-title">Help Directly. Transparently.</h1>
+                <p class="slide-description">
+                    Every action is verified through QR codes and blockchain-inspired transparency.
+                    No middlemen. No fraud. Just real impact, directly to those who need it most.
+                </p>
+            </div>
+
+            <!-- Slide 2: Workflow -->
+            <div class="slide">
+                <div class="slide-icon gradient-2">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h1 class="slide-title">Scan → Do → Earn Impact</h1>
+                <p class="slide-description">
+                    Our revolutionary workflow makes helping simple and rewarding
+                </p>
+                <div class="workflow-diagram">
+                    <div class="workflow-step">
+                        <i class="fas fa-qrcode" style="color: var(--neon-purple);"></i>
+                        <h3>Scan QR</h3>
+                        <p style="color: var(--text-muted); font-size: 0.875rem;">
+                            Identify beneficiary instantly
+                        </p>
+                    </div>
+                    <div class="workflow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="workflow-step">
+                        <i class="fas fa-tasks" style="color: var(--neon-cyan);"></i>
+                        <h3>Complete Task</h3>
+                        <p style="color: var(--text-muted); font-size: 0.875rem;">
+                            Provide verified help
+                        </p>
+                    </div>
+                    <div class="workflow-arrow">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                    <div class="workflow-step">
+                        <i class="fas fa-trophy" style="color: var(--neon-yellow);"></i>
+                        <h3>Earn Rewards</h3>
+                        <p style="color: var(--text-muted); font-size: 0.875rem;">
+                            Get points & badges
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Rewards -->
+            <div class="slide">
+                <div class="slide-icon gradient-3">
+                    <i class="fas fa-trophy"></i>
+                </div>
+                <h1 class="slide-title">Your Efforts = Real Rewards</h1>
+                <p class="slide-description">
+                    Unlock badges, earn certificates, and get real-world prizes as you create impact
+                </p>
+                <div class="badge-showcase">
+                    <div class="badge-item">
+                        <i class="fas fa-medal" style="color: #cd7f32;"></i>
+                        <h4>Helper</h4>
+                        <p>5 tasks completed</p>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-medal" style="color: #c0c0c0;"></i>
+                        <h4>Supporter</h4>
+                        <p>20 tasks + T-Shirt</p>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-medal" style="color: #ffd700;"></i>
+                        <h4>Hero</h4>
+                        <p>50 tasks + Bag</p>
+                    </div>
+                    <div class="badge-item">
+                        <i class="fas fa-trophy" style="color: var(--neon-purple);"></i>
+                        <h4>Legend</h4>
+                        <p>120 tasks + Premium</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Join -->
+            <div class="slide">
+                <div class="slide-icon gradient-4">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h1 class="slide-title">Join the Movement</h1>
+                <p class="slide-description">
+                    Be part of a community that's transforming charity through technology.
+                    Track your impact, compete on leaderboards, and make a real difference.
+                </p>
+                <button class="btn btn-primary" onclick="completeOnboarding()"
+                    style="margin-top: 2rem; font-size: 1.125rem; padding: 1.25rem 3rem;">
+                    <i class="fas fa-rocket"></i>
+                    Get Started
+                </button>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <button class="btn btn-outline" id="prevBtn" onclick="prevSlide()" style="visibility: hidden;">
+                <i class="fas fa-arrow-left"></i>
+                Previous
+            </button>
+
+            <div class="progress-dots">
+                <div class="dot active" onclick="goToSlide(0)"></div>
+                <div class="dot" onclick="goToSlide(1)"></div>
+                <div class="dot" onclick="goToSlide(2)"></div>
+                <div class="dot" onclick="goToSlide(3)"></div>
+            </div>
+
+            <button class="btn btn-primary" id="nextBtn" onclick="nextSlide()">
+                Next
+                <i class="fas fa-arrow-right"></i>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const totalSlides = 4;
+
+        function updateSlide() {
+            const container = document.getElementById('slidesContainer');
+            container.style.transform = `translateX(-${currentSlide * 100}%)`;
+
+            // Update dots
+            document.querySelectorAll('.dot').forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+
+            // Update buttons
+            document.getElementById('prevBtn').style.visibility = currentSlide === 0 ? 'hidden' : 'visible';
+            document.getElementById('nextBtn').style.display = currentSlide === totalSlides - 1 ? 'none' : 'flex';
+        }
+
+        function nextSlide() {
+            if (currentSlide < totalSlides - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        function goToSlide(index) {
+            currentSlide = index;
+            updateSlide();
+        }
+
+        function skipOnboarding() {
+            completeOnboarding();
+        }
+
+        function completeOnboarding() {
+            localStorage.removeItem('hh_showOnboarding');
+            window.location.href = 'dashboard.html';
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') nextSlide();
+            if (e.key === 'ArrowLeft') prevSlide();
+        });
+
+        // Auto-advance (optional, commented out)
+        // let autoAdvanceTimer;
+        // function startAutoAdvance() {
+        //     autoAdvanceTimer = setInterval(() => {
+        //         if (currentSlide < totalSlides - 1) {
+        //             nextSlide();
+        //         } else {
+        //             clearInterval(autoAdvanceTimer);
+        //         }
+        //     }, 5000);
+        // }
+        // startAutoAdvance();
+    </script>
+</body>
+
+</html>

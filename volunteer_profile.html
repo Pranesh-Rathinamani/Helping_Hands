@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .profile-header {
+            background: var(--gradient-hero);
+            background-size: 200% 200%;
+            animation: gradientShift 15s ease infinite;
+            border-radius: var(--radius);
+            padding: 3rem;
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 0;
+        }
+
+        .profile-header>* {
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .profile-name {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-level {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        /* Badge Shelf */
+        .badge-shelf {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            padding: 2rem;
+            border: 1px solid var(--glass-border);
+            margin-bottom: 2rem;
+        }
+
+        .badge-shelf-scroll {
+            display: flex;
+            gap: 1.5rem;
+            overflow-x: auto;
+            padding: 1rem 0;
+            scroll-behavior: smooth;
+        }
+
+        .badge-shelf-scroll::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .badge-shelf-scroll::-webkit-scrollbar-track {
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 3px;
+        }
+
+        .badge-shelf-scroll::-webkit-scrollbar-thumb {
+            background: var(--neon-purple);
+            border-radius: 3px;
+        }
+
+        .badge-item-shelf {
+            min-width: 140px;
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            text-align: center;
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .badge-item-shelf.locked {
+            opacity: 0.4;
+            filter: grayscale(100%);
+        }
+
+        .badge-item-shelf.unlocked {
+            border-color: var(--neon-purple);
+            animation: badgeGlow 2s infinite;
+        }
+
+        .badge-item-shelf:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-glow);
+        }
+
+        .badge-icon {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .badge-name {
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+            font-size: 0.875rem;
+        }
+
+        .badge-requirement {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            border: 1px solid var(--glass-border);
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-purple);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            display: block;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Activity Timeline */
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--gradient-primary);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 1.5rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2.5rem;
+            top: 0.5rem;
+            width: 12px;
+            height: 12px;
+            background: var(--neon-purple);
+            border-radius: 50%;
+            border: 3px solid var(--bg-primary);
+        }
+
+        .timeline-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .timeline-content {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-sm);
+            padding: 1rem;
+            border: 1px solid var(--glass-border);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <!-- Profile Header -->
+            <div class="profile-header animate-slideUp">
+                <div class="profile-avatar">
+                    <i class="fas fa-user-astronaut"></i>
+                </div>
+                <h1 class="profile-name" id="userName">Volunteer</h1>
+                <div class="profile-level" id="userLevel">Level 1 • Beginner</div>
+                <button class="btn btn-outline" style="border-color: rgba(255,255,255,0.3); color: white;">
+                    <i class="fas fa-edit"></i> Edit Profile
+                </button>
+            </div>
+
+            <!-- XP Progress Bar -->
+            <div class="card animate-slideUp" style="animation-delay: 0.1s; margin-bottom: 2rem;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <div>
+                        <h3 style="margin: 0;">Experience Progress</h3>
+                        <p style="color: var(--text-muted); font-size: 0.875rem; margin: 0.25rem 0 0 0;">
+                            <span id="xpCurrent">0</span> / <span id="xpNext">100</span> XP
+                        </p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-size: 1.5rem; font-weight: 700; color: var(--neon-purple);" id="nextLevel">
+                            Level 2</div>
+                        <div style="font-size: 0.75rem; color: var(--text-muted);">Next Level</div>
+                    </div>
+                </div>
+                <div class="progress-bar" style="height: 16px;">
+                    <div class="progress-fill" id="xpProgressBar" style="width: 0%;"></div>
+                </div>
+            </div>
+
+            <!-- Badge Shelf -->
+            <div class="badge-shelf animate-slideUp" style="animation-delay: 0.2s;">
+                <h2 style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-trophy"></i> Badge Collection
+                </h2>
+                <div class="badge-shelf-scroll" id="badgeShelf">
+                    <!-- Badges will be injected here -->
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div class="stats-grid animate-slideUp" style="animation-delay: 0.3s;">
+                <div class="stat-card">
+                    <i class="fas fa-tasks stat-icon" style="color: var(--neon-purple);"></i>
+                    <div class="stat-value" id="statTasks">0</div>
+                    <div class="stat-label">Tasks Completed</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-users stat-icon" style="color: var(--neon-cyan);"></i>
+                    <div class="stat-value" id="statLives">0</div>
+                    <div class="stat-label">Lives Impacted</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-star stat-icon" style="color: var(--neon-yellow);"></i>
+                    <div class="stat-value" id="statPoints">0</div>
+                    <div class="stat-label">Points Earned</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-trophy stat-icon" style="color: var(--neon-green);"></i>
+                    <div class="stat-value" id="statRank">#--</div>
+                    <div class="stat-label">Current Rank</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-fire stat-icon" style="color: #f87171;"></i>
+                    <div class="stat-value" id="statStreak">0</div>
+                    <div class="stat-label">Day Streak</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-clock stat-icon" style="color: var(--neon-pink);"></i>
+                    <div class="stat-value" id="statHours">0</div>
+                    <div class="stat-label">Hours Contributed</div>
+                </div>
+            </div>
+
+            <!-- Medical Contributions (Conditional) -->
+            <div id="medicalContributions" class="animate-slideUp"
+                style="animation-delay: 0.35s; margin-bottom: 2rem; display: none;">
+                <div class="card" style="border-left: 4px solid #0891b2; position: relative; overflow: hidden;">
+                    <div
+                        style="position: absolute; right: -20px; top: -20px; font-size: 8rem; color: rgba(8, 145, 178, 0.05); transform: rotate(15deg);">
+                        <i class="fas fa-hand-holding-medical"></i>
+                    </div>
+                    <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-medal"></i> Medical Service Recognition</h2>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;">
+                        <div>
+                            <div class="stat-label">Medical Tasks</div>
+                            <div style="font-size: 2.5rem; font-weight: 800; color: #0891b2;" id="statMedTasks">0</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Medical Service Hours</div>
+                            <div style="font-size: 2.5rem; font-weight: 800; color: #10b981;" id="statMedHours">0</div>
+                        </div>
+                    </div>
+                    <div
+                        style="background: rgba(8, 145, 178, 0.05); padding: 1.5rem; border-radius: var(--radius-sm); border: 1px solid rgba(8, 145, 178, 0.1); margin-bottom: 2rem;">
+                        <h4 style="margin-bottom: 0.5rem; color: #0891b2;"><i class="fas fa-info-circle"></i>
+                            Professional Recognition</h4>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); line-height: 1.6;">
+                            As a verified medical volunteer, your contributions are tracked for academic and
+                            professional recognition. Complete at least 5 tasks to unlock your first service
+                            certificate.
+                        </p>
+                    </div>
+                    <button id="btnGenerateCertificate" class="btn btn-primary w-full"
+                        style="background: var(--gradient-secondary);" onclick="generateMedicalCertificate()">
+                        <i class="fas fa-file-contract"></i> Generate Medical Service Certificate
+                    </button>
+                    <p id="certError"
+                        style="color: var(--danger); font-size: 0.8rem; margin-top: 0.5rem; text-align: center; display: none;">
+                        You need at least 1 completed task to generate a certificate.</p>
+                </div>
+            </div>
+
+            <!-- Recent Activity Timeline -->
+            <div class="card animate-slideUp" style="animation-delay: 0.4s;">
+                <h2 style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-history"></i> Recent Activity
+                </h2>
+                <div class="timeline" id="activityTimeline">
+                    <div class="timeline-item">
+                        <div class="timeline-date">No activity yet</div>
+                        <div class="timeline-content">
+                            <p style="color: var(--text-muted); margin: 0;">
+                                Complete your first task to start building your impact timeline!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = App.Auth.getCurrentUser();
+            if (!user) return;
+
+            // Profile Header
+            document.getElementById('userName').textContent = user.name;
+
+            const userPoints = user.points || 0;
+            const userLevel = Math.floor(userPoints / 100) + 1;
+            const xpInLevel = userPoints % 100;
+            const xpToNext = 100;
+
+            document.getElementById('userLevel').textContent = `Level ${userLevel} • ${getLevelName(userLevel)}`;
+            document.getElementById('nextLevel').textContent = `Level ${userLevel + 1}`;
+            document.getElementById('xpCurrent').textContent = xpInLevel;
+            document.getElementById('xpNext').textContent = xpToNext;
+            document.getElementById('xpProgressBar').style.width = `${(xpInLevel / xpToNext) * 100}%`;
+
+            // Badge System
+            const badges = [
+                { id: 'helper', name: 'Helper', icon: 'fa-medal', color: '#cd7f32', requirement: 5, reward: 'Badge' },
+                { id: 'supporter', name: 'Supporter', icon: 'fa-medal', color: '#c0c0c0', requirement: 20, reward: 'T-Shirt' },
+                { id: 'hero', name: 'Hero', icon: 'fa-medal', color: '#ffd700', requirement: 50, reward: 'Bag' },
+                { id: 'legend', name: 'Legend', icon: 'fa-trophy', color: '#8b5cf6', requirement: 120, reward: 'Premium' },
+                { id: 'streak', name: 'Streak Master', icon: 'fa-fire', color: '#f87171', requirement: 7, reward: 'Streak Badge' },
+                { id: 'speed', name: 'Speed Demon', icon: 'fa-bolt', color: '#fbbf24', requirement: 5, reward: 'Speed Badge' },
+                { id: 'platinum', name: 'Platinum', icon: 'fa-gem', color: '#22d3ee', requirement: 200, reward: 'Platinum' }
+            ];
+
+            const badgeShelf = document.getElementById('badgeShelf');
+            const tasksCompleted = Math.floor(userPoints / 10); // Mock: 10 points per task
+
+            badgeShelf.innerHTML = badges.map(badge => {
+                const unlocked = tasksCompleted >= badge.requirement;
+                return `
+                    <div class="badge-item-shelf ${unlocked ? 'unlocked' : 'locked'}" 
+                         onclick="showBadgeModal('${badge.name}', '${badge.reward}', ${unlocked})">
+                        <i class="fas ${badge.icon} badge-icon" style="color: ${badge.color};"></i>
+                        <div class="badge-name">${badge.name}</div>
+                        <div class="badge-requirement">
+                            ${unlocked ? '✓ Unlocked' : `${badge.requirement} tasks`}
+                        </div>
+                        ${unlocked && badge.reward !== 'Badge' ? `<div style="font-size: 0.7rem; color: var(--neon-green); margin-top: 0.25rem;">🎁 ${badge.reward}</div>` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            // Stats
+            document.getElementById('statTasks').textContent = tasksCompleted;
+            document.getElementById('statLives').textContent = Math.floor(tasksCompleted * 1.5);
+            document.getElementById('statPoints').textContent = userPoints;
+            document.getElementById('statRank').textContent = '#' + (Math.floor(Math.random() * 50) + 1);
+            document.getElementById('statStreak').textContent = Math.floor(Math.random() * 10);
+            document.getElementById('statHours').textContent = Math.floor(tasksCompleted * 0.5);
+
+            // Medical Stats
+            if (user.isMedicalVolunteer || user.role === 'Admin') {
+                document.getElementById('medicalContributions').style.display = 'block';
+                const medStats = user.medicalStats || { tasks: 0, hours: 0 };
+                document.getElementById('statMedTasks').textContent = medStats.tasks;
+                document.getElementById('statMedHours').textContent = medStats.hours;
+
+                if (medStats.tasks > 0) {
+                    document.getElementById('btnGenerateCertificate').disabled = false;
+                    document.getElementById('certError').style.display = 'none';
+                } else {
+                    document.getElementById('btnGenerateCertificate').style.opacity = '0.5';
+                    document.getElementById('certError').style.display = 'block';
+                }
+            }
+
+            // Recent Activity
+            const tasks = App.Data.getTasks();
+            const userTasks = tasks.filter(t => t.status === 'Approved').slice(-5).reverse();
+
+            if (userTasks.length > 0) {
+                const timeline = document.getElementById('activityTimeline');
+                timeline.innerHTML = userTasks.map(task => `
+                    <div class="timeline-item">
+                        <div class="timeline-date">${task.timestamp}</div>
+                        <div class="timeline-content">
+                            <div style="font-weight: 600; margin-bottom: 0.25rem;">${task.title}</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">
+                                ${task.type} • <span style="color: var(--neon-green);">+${task.points} points</span>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        });
+
+        function getLevelName(level) {
+            if (level >= 10) return 'Legend';
+            if (level >= 7) return 'Hero';
+            if (level >= 5) return 'Expert';
+            if (level >= 3) return 'Intermediate';
+            return 'Beginner';
+        }
+
+        function showBadgeModal(name, reward, unlocked) {
+            if (unlocked) {
+                alert(`🎉 ${name} Badge Unlocked!\n\nReward: ${reward}\n\nKeep up the amazing work!`);
+            } else {
+                alert(`🔒 ${name} Badge\n\nComplete more tasks to unlock this badge and earn: ${reward}`);
+            }
+        }
+
+        function generateMedicalCertificate() {
+            const user = App.Auth.getCurrentUser();
+            const medStats = user.medicalStats || { tasks: 0 };
+
+            if (medStats.tasks === 0) {
+                alert('You must complete at least one medical task to generate a certificate.');
+                return;
+            }
+
+            // Redirect to certificate page (will create this next)
+            window.location.href = 'medical_certificate.html';
+        }
+    </script>
+</body>
+
+</html>

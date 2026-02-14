@@ -1,0 +1,431 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mothers & Child Nutrition Hub - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        :root {
+            --accent-mothers: #ec4899;
+            --glass-bg-mothers: rgba(236, 72, 153, 0.05);
+        }
+
+        .mothers-page {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .hub-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Funding Banner */
+        .funding-banner {
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(99, 102, 241, 0.15));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .funding-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(236, 72, 153, 0.1) 0%, transparent 70%);
+            animation: pulse-slow 10s infinite;
+        }
+
+        .funding-info h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        }
+
+        .funding-stat {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--accent-mothers);
+            font-family: var(--font-heading);
+        }
+
+        /* Grid Layouts */
+        .registry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 2rem;
+        }
+
+        @media (max-width: 1100px) {
+            .detail-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Module Sections */
+        .module-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--glass-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .module-card.hover-lift:hover {
+            transform: translateY(-8px);
+            border-color: rgba(236, 72, 153, 0.4);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(236, 72, 153, 0.1);
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            background: linear-gradient(135deg, #fff 0%, var(--text-secondary) 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .section-title i {
+            -webkit-text-fill-color: var(--accent-mothers);
+        }
+
+        /* Tracker Widgets */
+        .tracker-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .tracker-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .tracker-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-mothers);
+            margin: 0.5rem 0;
+            font-family: var(--font-heading);
+        }
+
+        .tracker-controls {
+            display: flex;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+        }
+
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: var(--glass-border);
+            color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .control-btn:hover {
+            background: var(--accent-mothers);
+            transform: scale(1.1);
+        }
+
+        /* Health List */
+        .health-list-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem;
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        .status-badge {
+            padding: 0.4rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-done {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--neon-green);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-alert {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* Baby Profile Sidebar */
+        .baby-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid var(--accent-mothers);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            background: var(--bg-tertiary);
+        }
+
+        .metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--bg-tertiary);
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+            border: 1px solid var(--glass-border);
+        }
+
+        .back-btn {
+            background: none;
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: var(--glass-border);
+            color: #fff;
+        }
+
+        @keyframes pulse-slow {
+
+            0%,
+            100% {
+                transform: scale(1);
+                opacity: 0.1;
+            }
+
+            50% {
+                transform: scale(1.1);
+                opacity: 0.2;
+            }
+        }
+    </style>
+</head>
+
+<body class="mothers-page">
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content main_content">
+            <div class="hub-container">
+
+                <!-- REGISTRY VIEW (Initial State) -->
+                <div id="registry-view">
+                    <header style="margin-bottom: 2rem;">
+                        <h1
+                            style="font-size: 3rem; font-weight: 900; background: linear-gradient(135deg, #fff 0%, var(--accent-mothers) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                            Nutrition Registry
+                        </h1>
+                        <p class="text-secondary">Managing 8 beneficiaries under the "Helping Hands" Care Initiative.
+                        </p>
+                    </header>
+
+                    <!-- Impact Funding Banner -->
+                    <div class="funding-banner fade-in-up">
+                        <div class="funding-info">
+                            <h2 style="color: #fff;"><i class="fas fa-hand-holding-heart"
+                                    style="color: var(--accent-mothers);"></i> Impact Grant Allocation</h2>
+                            <p class="text-secondary">Total funds dedicated to Maternal & Infant support this month.</p>
+                            <div
+                                style="margin-top: 1rem; background: rgba(255,255,255,0.05); padding: 0.5rem 1rem; border-radius: 50px; display: inline-block;">
+                                <i class="fas fa-shield-alt" style="color: var(--neon-green);"></i> <span
+                                    style="font-size: 0.85rem; font-weight: 600;"> EVERYTHING FOR FREE • FUNDED BY
+                                    SPONSORS</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="funding-stat" id="total-allocation-value">₹450K</div>
+                            <div class="text-muted small">Total Impact Power</div>
+                        </div>
+                    </div>
+
+                    <div class="registry-grid" id="mothers-registry">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- PROFILE DETAIL VIEW (Hidden by default) -->
+                <div id="profile-detail-view" style="display: none;">
+                    <button class="back-btn" onclick="App.MothersHub.closeProfile()">
+                        <i class="fas fa-arrow-left"></i> Back to Registry
+                    </button>
+
+                    <header style="margin-bottom: 2.5rem;">
+                        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+                            <h1 id="current-mother-name" style="font-size: 2.5rem; font-weight: 800; color: #fff;">
+                                Mother Name</h1>
+                            <span class="status-badge status-done">Active Care</span>
+                        </div>
+                        <p class="text-secondary">Assigned Care Grant: <span
+                                style="color: var(--neon-green); font-weight: 700;">Full Coverage</span></p>
+                    </header>
+
+                    <div class="detail-grid">
+                        <div class="detail-main">
+                            <!-- Nutrition Trackers -->
+                            <section class="module-card fade-in-up">
+                                <h2 class="section-title"><i class="fas fa-utensils"></i> Maternal Nutrition</h2>
+                                <div class="tracker-grid">
+                                    <div class="tracker-item">
+                                        <div class="text-secondary">Meals Today</div>
+                                        <div class="tracker-value" id="parent-meals">0</div>
+                                        <div class="tracker-controls">
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('parent-meals', -1)"><i
+                                                    class="fas fa-minus"></i></button>
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('parent-meals', 1)"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="tracker-item">
+                                        <div class="text-secondary">Water (Glasses)</div>
+                                        <div class="tracker-value" id="parent-water">0</div>
+                                        <div class="tracker-controls">
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('parent-water', -1)"><i
+                                                    class="fas fa-minus"></i></button>
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('parent-water', 1)"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+
+                            <section class="module-card fade-in-up" style="animation-delay: 0.1s;">
+                                <h2 class="section-title"><i class="fas fa-baby"></i> Infant Feeding Logs</h2>
+                                <div class="tracker-grid">
+                                    <div class="tracker-item">
+                                        <div class="text-secondary">Milk Intake (ml)</div>
+                                        <div class="tracker-value" id="baby-milk">0</div>
+                                        <div class="tracker-controls">
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('baby-milk', -50)"><i
+                                                    class="fas fa-minus"></i></button>
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('baby-milk', 50)"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                    <div class="tracker-item">
+                                        <div class="text-secondary">Milk Powder (Scoops)</div>
+                                        <div class="tracker-value" id="baby-powder">0</div>
+                                        <div class="tracker-controls">
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('baby-powder', -1)"><i
+                                                    class="fas fa-minus"></i></button>
+                                            <button class="control-btn"
+                                                onclick="App.MothersHub.updateCount('baby-powder', 1)"><i
+                                                    class="fas fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </section>
+                        </div>
+
+                        <div class="detail-side">
+                            <div class="module-card fade-in-up"
+                                style="text-align: center; background: linear-gradient(180deg, rgba(236,72,153,0.1), transparent);">
+                                <div class="baby-avatar">👶</div>
+                                <h3 id="current-baby-name" style="font-size: 1.4rem; font-weight: 700;">Baby Name</h3>
+                                <p id="current-baby-meta" class="text-muted small">Age • Gender</p>
+
+                                <div
+                                    style="margin-top: 1.5rem; display: flex; flex-wrap: wrap; justify-content: center;">
+                                    <div class="metric-pill" id="baby-weight"><i class="fas fa-weight"></i> 0 kg</div>
+                                    <div class="metric-pill" id="baby-height"><i class="fas fa-ruler-vertical"></i> 0 cm
+                                    </div>
+                                    <div class="metric-pill" id="baby-temp"><i class="fas fa-thermometer-half"></i> 0°F
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="module-card fade-in-up" style="animation-delay: 0.2s;">
+                                <h3 class="section-title" style="font-size: 1.1rem;"><i class="fas fa-hospital"></i>
+                                    Medical Summary</h3>
+                                <div class="health-list">
+                                    <div class="health-list-item">
+                                        <span class="small">Last Checkup</span>
+                                        <span class="status-badge status-done">OK</span>
+                                    </div>
+                                    <div class="health-list-item">
+                                        <span class="small">Next Vaccine</span>
+                                        <span class="status-badge status-alert">Due</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init();
+            App.MothersHub.init();
+        });
+    </script>
+</body>
+
+</html>

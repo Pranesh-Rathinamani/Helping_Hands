@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Welcome Header -->
+            <header class="mb-6">
+                <h1 class="animate-slideUp" id="dashboardGreeting">Welcome to Helping Hands! 👋</h1>
+                <p class="animate-slideUp"
+                    style="animation-delay: 0.1s; font-size: 1.125rem; color: var(--text-muted);">
+                    Making a difference, one act of kindness at a time
+                </p>
+            </header>
+
+            <!-- Quick Stats Row -->
+            <div class="animate-slideUp" style="animation-delay: 0.2s; margin-bottom: 2rem;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem;">
+                    <div class="card" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">⭐</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: var(--neon-purple);" id="userPoints">0
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">Your Points</div>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🎯</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #0891b2;" id="tasksCount">0</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">Tasks Done</div>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">🏆</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #f59e0b;" id="userRank">-</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">Your Rank</div>
+                    </div>
+                    <div class="card" style="text-align: center; padding: 1.5rem;">
+                        <div style="font-size: 2rem; margin-bottom: 0.5rem;">👥</div>
+                        <div style="font-size: 1.75rem; font-weight: 700; color: #10b981;" id="peopleCount">0</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">People Helped</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Actions Grid -->
+            <div class="animate-slideUp" style="animation-delay: 0.3s; margin-bottom: 2rem;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-rocket"></i> What would you like to do?</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem;">
+                    <a href="tasks.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid var(--neon-purple);">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">✅</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Approve Tasks</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">Review and approve volunteer
+                                    tasks</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="enroll.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid #0891b2;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">➕</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Add Beneficiary</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">Enroll someone who needs help
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="redeem.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid #f59e0b;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">🎁</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Redeem Shop</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">Help beneficiaries get items
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="nutrition.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid #ec4899;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">👩‍👧</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Mothers & Nutrition</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">Support mothers and children
+                                </p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="community.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid #10b981;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">💬</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Community</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">Chat and share stories</p>
+                            </div>
+                        </div>
+                    </a>
+
+                    <a href="leaderboard.html" class="card hover-lift"
+                        style="padding: 2rem; text-decoration: none; transition: all 0.3s; border-left: 4px solid #a855f7;">
+                        <div style="display: flex; align-items: center; gap: 1.5rem;">
+                            <div style="font-size: 3rem;">🏆</div>
+                            <div>
+                                <h3 style="margin-bottom: 0.5rem; color: var(--text-primary);">Leaderboard</h3>
+                                <p style="color: var(--text-muted); font-size: 0.875rem;">View top volunteers</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Medical Help Center (Conditional) -->
+            <div id="medicalHelpCenter" class="animate-slideUp"
+                style="animation-delay: 0.35s; margin-bottom: 2rem; display: none;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                    <h2><i class="fas fa-hand-holding-medical"></i> Medical Help Center</h2>
+                    <button class="btn btn-primary" onclick="showMedicalRequestModal()">
+                        <i class="fas fa-plus"></i> Request Medical Help
+                    </button>
+                </div>
+
+                <div class="card" style="padding: 2rem; border-left: 4px solid #0891b2; margin-bottom: 2rem;">
+                    <h3>Nearby Medical Help Requests</h3>
+                    <div id="medicalRequestsList" style="margin-top: 1.5rem;">
+                        <p class="text-muted">No pending medical requests nearby.</p>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 2rem; border-left: 4px solid #10b981;">
+                    <h3>My Medical Contributions</h3>
+                    <div
+                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 1.5rem;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #10b981;" id="medContribTasks">0</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">Tasks Completed</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 2rem; font-weight: 700; color: #0891b2;" id="medContribHours">0</div>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">Service Hours</div>
+                        </div>
+                        <div style="text-align: center; grid-column: span 2;">
+                            <button class="btn btn-outline w-full" style="margin-top: 1rem;"
+                                onclick="window.location.href='volunteer_profile.html#medical'">
+                                <i class="fas fa-certificate"></i> View Medical Service Certificate
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="animate-slideUp" style="animation-delay: 0.4s;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-history"></i> Recent Activity</h2>
+                <div class="card" id="recentActivity">
+                    <!-- Activity will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Medical Request Modal -->
+    <div id="medicalRequestModal" class="modal"
+        style="display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(5px);">
+        <div class="modal-content card animate-zoomIn"
+            style="margin: 5% auto; padding: 2.5rem; width: 90%; max-width: 600px; border: 1px solid var(--glass-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="margin: 0;"><i class="fas fa-heartbeat"></i> Request Medical Help</h2>
+                <i class="fas fa-times" style="cursor: pointer; font-size: 1.5rem; color: var(--text-muted);"
+                    onclick="closeMedicalRequestModal()"></i>
+            </div>
+            <form id="medicalRequestForm" onsubmit="handleMedicalRequestSubmit(event)">
+                <div class="form-group">
+                    <label class="form-label">Type of Help Needed</label>
+                    <select name="type" class="form-select" required>
+                        <option value="Elderly care">Elderly care</option>
+                        <option value="Basic checkup">Basic checkup</option>
+                        <option value="First aid">First aid</option>
+                        <option value="Mother and child support">Mother and child support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-input" placeholder="Enter your current location"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Urgency Level</label>
+                    <select name="urgency" class="form-select" required>
+                        <option value="Low">Low (Can wait 24-48 hours)</option>
+                        <option value="Medium">Medium (Needed today)</option>
+                        <option value="High">High (Urgent - Immediate attention)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Short Description of Condition</label>
+                    <textarea name="description" class="form-input" style="min-height: 100px;"
+                        placeholder="e.g., Fever, wound dressing, regular checkup..." required></textarea>
+                </div>
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-outline" style="flex: 1;"
+                        onclick="closeMedicalRequestModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">Submit Medical Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = App.Auth.getCurrentUser();
+
+            // Personalized greeting
+            document.getElementById('dashboardGreeting').textContent = `Welcome ${user.name}! 👋`;
+
+            // Enable Medical Help Center if user is medical volunteer
+            if (user.isMedicalVolunteer || user.role === 'Admin') {
+                document.getElementById('medicalHelpCenter').style.display = 'block';
+                loadMedicalRequests();
+                loadMedicalStats();
+            }
+
+            // Load quick stats
+            loadQuickStats();
+
+            // Load recent activity
+            loadRecentActivity();
+        });
+
+        function loadMedicalRequests() {
+            const listContainer = document.getElementById('medicalRequestsList');
+            const requests = App.Data.Medical.getRequests().filter(r => r.status === 'Pending');
+
+            if (requests.length === 0) {
+                listContainer.innerHTML = '<p class="text-muted">No pending medical requests nearby.</p>';
+                return;
+            }
+
+            listContainer.innerHTML = requests.map(request => `
+                <div style="padding: 1.5rem; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--glass-border); border-radius: var(--radius-sm); margin-bottom: 1rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <div>
+                            <span class="badge" style="background: ${request.urgency === 'High' ? 'var(--neon-red)' : request.urgency === 'Medium' ? 'var(--neon-yellow)' : 'var(--neon-green)'}; margin-bottom: 0.5rem;">${request.urgency} Priority</span>
+                            <h4 style="margin: 0;">${request.type}</h4>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 0.875rem; color: var(--text-muted);"><i class="fas fa-map-marker-alt"></i> ${request.location}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">${request.timestamp}</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 1.5rem;">${request.description}</p>
+                    <div style="display: flex; gap: 1rem;">
+                        <button class="btn btn-primary" style="flex: 1; padding: 0.6rem;" onclick="acceptMedicalRequest('${request.id}')">Accept Task</button>
+                        <button class="btn btn-outline" style="flex: 1; padding: 0.6rem;" onclick="alert('Viewing full details for ${request.id}')">View Details</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function loadMedicalStats() {
+            const user = App.Auth.getCurrentUser();
+            const stats = user.medicalStats || { tasks: 0, hours: 0 };
+            document.getElementById('medContribTasks').textContent = stats.tasks;
+            document.getElementById('medContribHours').textContent = stats.hours;
+        }
+
+        function showMedicalRequestModal() {
+            document.getElementById('medicalRequestModal').style.display = 'block';
+        }
+
+        function closeMedicalRequestModal() {
+            document.getElementById('medicalRequestModal').style.display = 'none';
+        }
+
+        function handleMedicalRequestSubmit(event) {
+            event.preventDefault();
+            const form = event.target;
+            const request = {
+                type: form.type.value,
+                location: form.location.value,
+                urgency: form.urgency.value,
+                description: form.description.value
+            };
+
+            App.Data.Medical.addRequest(request);
+            App.Notifications.showToast('Medical request submitted successfully!', 'success');
+            closeMedicalRequestModal();
+            loadMedicalRequests();
+        }
+
+        function acceptMedicalRequest(id) {
+            const user = App.Auth.getCurrentUser();
+            App.Data.Medical.acceptRequest(id, user.email);
+            App.Notifications.showToast('Medical task accepted! Please proceed to the location.', 'success');
+            loadMedicalRequests();
+
+            // Simulating completion for demo after 3 seconds
+            setTimeout(() => {
+                if (confirm('Did you complete the medical task?')) {
+                    App.Data.Medical.completeRequest(id);
+                    App.Notifications.showToast('Medical task marked as completed!', 'success');
+                    loadMedicalRequests();
+                    loadMedicalStats();
+                }
+            }, 3000);
+        }
+
+        function loadQuickStats() {
+            const user = App.Auth.getCurrentUser();
+            const tasks = App.Data.getTasks();
+            const volunteers = App.Data.getVolunteers();
+
+            // Points
+            document.getElementById('userPoints').textContent = user.points || 0;
+
+            // Tasks count
+            const completedTasks = tasks.filter(t => t.status === 'Approved').length;
+            document.getElementById('tasksCount').textContent = completedTasks;
+
+            // Rank
+            const sorted = volunteers.sort((a, b) => (b.points || 0) - (a.points || 0));
+            const rank = sorted.findIndex(v => v.email === user.email) + 1;
+            document.getElementById('userRank').textContent = rank > 0 ? '#' + rank : '-';
+
+            // People helped
+            const peopleHelped = Math.floor(completedTasks * 1.5);
+            document.getElementById('peopleCount').textContent = peopleHelped;
+        }
+
+        function loadRecentActivity() {
+            const container = document.getElementById('recentActivity');
+            const activities = [
+                { icon: '✅', text: 'Task "Provide Meal" completed', time: '2 hours ago' },
+                { icon: '🎁', text: 'Redeemed grocery kit for Maria', time: '5 hours ago' },
+                { icon: '👥', text: 'New beneficiary enrolled', time: '1 day ago' },
+                { icon: '💬', text: 'New message in community', time: '1 day ago' },
+                { icon: '🏆', text: 'Moved up to rank #5', time: '2 days ago' }
+            ];
+
+            container.innerHTML = activities.map(activity => `
+                <div style="display: flex; align-items: center; gap: 1rem; padding: 1rem; border-bottom: 1px solid var(--glass-border);">
+                    <div style="font-size: 2rem;">${activity.icon}</div>
+                    <div style="flex: 1;">
+                        <div style="font-weight: 600;">${activity.text}</div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted);">${activity.time}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+    </script>
+</body>
+
+</html>

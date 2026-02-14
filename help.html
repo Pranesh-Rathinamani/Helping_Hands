@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help & Support - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <header class="mb-4">
+                <h1>Help Center</h1>
+                <p>Guides and support for volunteers and beneficiaries.</p>
+            </header>
+
+            <div class="grid-2">
+                <div class="card">
+                    <h3><i class="fas fa-robot"></i> AI Assistant</h3>
+                    <p>Our AI is active 24/7 to answer your queries.</p>
+                    <button
+                        onclick="App.AI.renderWidget(); document.getElementById('ai-chat-window').style.display='flex';"
+                        class="btn btn-primary">
+                        Open Chat
+                    </button>
+                </div>
+
+                <div class="card">
+                    <h3><i class="fas fa-phone-alt"></i> Emergency Contact</h3>
+                    <p>For urgent medical or safety issues.</p>
+                    <div style="font-size:1.5rem; font-weight:700; color:var(--danger);">1800-HELP-HAND</div>
+                </div>
+            </div>
+
+            <h2 class="mt-4 mb-4">Frequently Asked Questions</h2>
+
+            <div class="flex flex-col gap-4">
+                <div class="card">
+                    <h4 style="margin-bottom:0.5rem;">How do I verify a task?</h4>
+                    <p class="text-muted">Scan the beneficiary's QR code after they complete the task. You can then
+                        approve it from the "Task Approvals" page.</p>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin-bottom:0.5rem;">How are points calculated?</h4>
+                    <p class="text-muted">Physical tasks earn 20-30 points. Creative tasks earn 15-20 points. Complexity
+                        and time are factors.</p>
+                </div>
+
+                <div class="card">
+                    <h4 style="margin-bottom:0.5rem;">Is my data secure?</h4>
+                    <p class="text-muted">Yes, all data is encrypted and stored locally on your device for this demo.
+                        Production versions use Blockchain.</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+
+</html>

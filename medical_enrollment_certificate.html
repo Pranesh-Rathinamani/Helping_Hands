@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enrollment Certificate - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Montserrat:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --cert-cyan: #0891b2;
+            --cert-dark: #0f172a;
+            --cert-bg: #f8fafc;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: #334155;
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .certificate-container {
+            width: 1056px;
+            height: 816px;
+            background: var(--cert-bg);
+            border: 20px solid var(--cert-dark);
+            padding: 40px;
+            position: relative;
+            box-sizing: border-box;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .certificate-container::after {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            bottom: 10px;
+            border: 2px solid var(--cert-cyan);
+            pointer-events: none;
+        }
+
+        .content {
+            text-align: center;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            border: 2px solid var(--cert-cyan);
+            padding: 40px;
+        }
+
+        .header {
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 3rem;
+            color: var(--cert-cyan);
+            margin-bottom: 10px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: var(--cert-dark);
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--cert-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+
+        .presented-to {
+            font-size: 1.1rem;
+            font-style: italic;
+            margin: 30px 0 10px;
+            color: #64748b;
+        }
+
+        .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            color: var(--cert-dark);
+            border-bottom: 2px solid var(--cert-cyan);
+            display: inline-block;
+            padding: 0 40px;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            line-height: 1.7;
+            max-width: 850px;
+            margin: 0 auto;
+            color: #1e293b;
+        }
+
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-top: 50px;
+            padding: 0 40px;
+        }
+
+        .signature-line {
+            width: 220px;
+            border-top: 1px solid var(--cert-dark);
+            text-align: center;
+            padding-top: 10px;
+            font-size: 0.8rem;
+            color: #475569;
+        }
+
+        .seal {
+            width: 100px;
+            height: 100px;
+            background: var(--cert-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0 0 15px rgba(8, 145, 178, 0.3);
+            border: 4px double white;
+            transform: rotate(-10deg);
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            background: white;
+            color: var(--cert-dark);
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        @media print {
+            .controls {
+                display: none;
+            }
+
+            body {
+                background: white;
+            }
+
+            .certificate-container {
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="controls">
+        <button class="btn" style="background: var(--cert-cyan); color: white;" onclick="window.print()"><i
+                class="fas fa-print"></i> Print</button>
+        <button class="btn" onclick="window.history.back()"><i class="fas fa-arrow-left"></i> Back</button>
+    </div>
+
+    <div class="certificate-container">
+        <div class="content">
+            <div class="header">
+                <div class="logo"><i class="fas fa-stethoscope"></i></div>
+                <h1>Letter of Enrollment</h1>
+                <div class="subtitle">Medical Volunteer Program</div>
+            </div>
+
+            <div class="presented-to">This confirms that</div>
+            <div class="name" id="certName">John Doe</div>
+
+            <div class="description">
+                has officially enrolled as a <strong>Medical Student Volunteer</strong> in the Helping Hands platform.
+                This program authorizes the bearer to assist our community outreach teams in providing basic health
+                assessments, first-aid support, and medical guidance under platform protocols.
+            </div>
+
+            <div style="margin-top: 2rem;">
+                <p style="font-size: 0.9rem; color: var(--cert-cyan);">Enrollment ID: <span
+                        id="certId">HH-MED-0000</span></p>
+                <p style="font-size: 0.9rem; color: #64748b;">Issued on: <span id="certDate">Feb 07, 2026</span></p>
+            </div>
+
+            <div class="footer">
+                <div class="signature-column">
+                    <div style="font-family: 'Cinzel', serif; font-size: 1rem; color: var(--cert-dark);">Pranesh R</div>
+                    <div class="signature-line">Platform Director</div>
+                </div>
+                <div class="seal">OFFICIAL<br>ENROLLMENT<br>VERIFIED</div>
+                <div class="signature-column">
+                    <div style="font-family: 'Cinzel', serif; font-size: 1rem; color: var(--cert-dark);">Medical
+                        Outreach</div>
+                    <div class="signature-line">Program Supervisor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const user = App.Auth.getCurrentUser();
+            if (!user) { window.location.href = 'index.html'; return; }
+            document.getElementById('certName').textContent = user.name;
+            document.getElementById('certId').textContent = 'HH-MED-' + user.id.toString().slice(-6);
+            document.getElementById('certDate').textContent = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+        });
+    </script>
+</body>
+
+</html>

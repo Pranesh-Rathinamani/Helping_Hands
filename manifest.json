@@ -1,0 +1,42 @@
+{
+  "name": "Helping Hands",
+  "short_name": "Helping Hands",
+  "description": "Next-generation social impact platform transforming charity through QR codes, gamification, and transparency",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#0a1929",
+  "theme_color": "#5b21b6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["social", "lifestyle", "productivity"],
+  "screenshots": [],
+  "shortcuts": [
+    {
+      "name": "Scan QR",
+      "short_name": "Scan",
+      "description": "Quickly scan a beneficiary QR code",
+      "url": "/scan.html",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Dashboard",
+      "short_name": "Dashboard",
+      "description": "View your impact dashboard",
+      "url": "/dashboard.html",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

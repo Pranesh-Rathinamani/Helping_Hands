@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Approvals - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .beneficiary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .beneficiary-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .beneficiary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .beneficiary-card.selected {
+            border-color: var(--neon-purple);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .task-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .task-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.3s;
+        }
+
+        .task-card.pending {
+            border-left: 4px solid #f59e0b;
+        }
+
+        .task-card.approved {
+            border-left: 4px solid #10b981;
+        }
+
+        .task-card.rejected {
+            border-left: 4px solid #ef4444;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .back-button {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <!-- Beneficiary Selection View -->
+            <div id="beneficiaryView">
+                <header class="mb-6">
+                    <h1 class="animate-slideUp"><i class="fas fa-clipboard-check"></i> Task Approvals</h1>
+                    <p class="animate-slideUp" style="animation-delay: 0.1s;">Select a beneficiary to view and approve
+                        their tasks.</p>
+                </header>
+
+                <div class="beneficiary-grid" id="beneficiaryGrid">
+                    <!-- Beneficiaries loaded here -->
+                </div>
+            </div>
+
+            <!-- Task Management View -->
+            <div id="taskView" style="display: none;">
+                <button class="btn btn-outline back-button" onclick="showBeneficiaryView()">
+                    <i class="fas fa-arrow-left"></i> Back to Beneficiaries
+                </button>
+
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 id="selectedBeneficiaryName" style="margin: 0;">Loading...</h2>
+                            <div style="color: var(--text-muted); margin-top: 0.5rem;" id="selectedBeneficiaryInfo">
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--neon-purple);"
+                                id="selectedBeneficiaryPoints">0</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">Total Points</div>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Available Tasks</h3>
+                <div class="task-grid" id="taskGrid">
+                    <!-- Tasks loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        let selectedBeneficiary = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBeneficiaries();
+        });
+
+        function loadBeneficiaries() {
+            const beggars = App.Data.getBeggars();
+            const grid = document.getElementById('beneficiaryGrid');
+
+            if (beggars.length === 0) {
+                grid.innerHTML = '<div class="card text-center">No beneficiaries enrolled yet. <a href="enroll.html">Enroll one now</a>.</div>';
+                return;
+            }
+
+            grid.innerHTML = beggars.map(b => `
+                <div class="beneficiary-card animate-slideUp" onclick="selectBeneficiary('${b.id}')">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-primary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 700;">
+                            ${b.name.charAt(0)}
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0;">${b.name}</h3>
+                            <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
+                                ID: ${b.id}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; font-size: 0.875rem;">
+                        <div>
+                            <i class="fas fa-wheelchair"></i> ${b.physicalAbility || 'Unknown'}
+                        </div>
+                        <div>
+                            <i class="fas fa-star" style="color: #f59e0b;"></i> ${b.points || 0} pts
+                        </div>
+                    </div>
+                    
+                    ${b.isNewBornMother ? '<div class="mother-badge" style="margin-top: 0.75rem; padding: 0.25rem 0.75rem; font-size: 0.75rem;"><i class="fas fa-baby-carriage"></i> Care Program</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function selectBeneficiary(id) {
+            selectedBeneficiary = App.Data.getBeggarById(id);
+            if (!selectedBeneficiary) return;
+
+            // Update UI
+            document.getElementById('beneficiaryView').style.display = 'none';
+            document.getElementById('taskView').style.display = 'block';
+
+            document.getElementById('selectedBeneficiaryName').textContent = selectedBeneficiary.name;
+            document.getElementById('selectedBeneficiaryInfo').innerHTML = `
+                <i class="fas fa-wheelchair"></i> ${selectedBeneficiary.physicalAbility || 'Unknown'} • 
+                <i class="fas fa-id-card"></i> ${selectedBeneficiary.id}
+            `;
+            document.getElementById('selectedBeneficiaryPoints').textContent = selectedBeneficiary.points || 0;
+
+            loadTasksForBeneficiary();
+        }
+
+        function loadTasksForBeneficiary() {
+            const allTasks = App.Data.getTasks();
+            const grid = document.getElementById('taskGrid');
+
+            if (!selectedBeneficiary) return;
+
+            // Filter tasks based on physical ability
+            const physicalAbility = selectedBeneficiary.physicalAbility || 'Fully Able';
+            let availableTasks = [];
+
+            if (physicalAbility === 'Disabled') {
+                // Only virtual and care tasks
+                availableTasks = allTasks.filter(t =>
+                    t.type === 'Virtual' || t.type === 'Care' || t.type === 'Educational'
+                );
+            } else if (physicalAbility === 'Partially Disabled') {
+                // Virtual, care, educational, and light physical
+                availableTasks = allTasks.filter(t =>
+                    t.type === 'Virtual' || t.type === 'Care' || t.type === 'Educational' ||
+                    t.type === 'Social' || (t.type === 'Physical' && t.points <= 50)
+                );
+            } else {
+                // All tasks available for fully able
+                availableTasks = allTasks;
+            }
+
+            // Filter for tasks not yet assigned or assigned to this beggar
+            const beneficiaryTasks = availableTasks.filter(t =>
+                !t.beggarId || t.beggarId === selectedBeneficiary.id
+            );
+
+            if (beneficiaryTasks.length === 0) {
+                grid.innerHTML = '<div class="card text-center">No suitable tasks available for this beneficiary based on their physical ability.</div>';
+                return;
+            }
+
+            grid.innerHTML = beneficiaryTasks.map(t => `
+                <div class="task-card ${t.status.toLowerCase()} animate-slideUp">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1rem;">
+                        <h3 style="margin: 0; flex: 1;">${t.title}</h3>
+                        <span class="badge ${t.status === 'Pending' ? 'badge-warning' : t.status === 'Approved' ? 'badge-success' : 'badge-danger'}">
+                            ${t.status}
+                        </span>
+                    </div>
+                    
+                    <p style="color: var(--text-muted); margin-bottom: 1rem;">${t.description}</p>
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                        <div>
+                            <span style="background: rgba(139, 92, 246, 0.1); color: var(--neon-purple); padding: 0.25rem 0.75rem; border-radius: 1rem; font-size: 0.875rem; font-weight: 600;">
+                                ${t.type}
+                            </span>
+                        </div>
+                        <div style="font-weight: 700; color: #f59e0b;">
+                            <i class="fas fa-star"></i> ${t.points} points
+                        </div>
+                    </div>
+
+                    ${t.status === 'Pending' ? `
+                        <div class="task-actions">
+                            <button class="btn btn-success" style="flex: 1;" onclick="approveTask('${t.id}')">
+                                <i class="fas fa-check"></i> Approve
+                            </button>
+                            <button class="btn btn-danger" style="flex: 1;" onclick="denyTask('${t.id}')">
+                                <i class="fas fa-times"></i> Deny
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+            `).join('');
+        }
+
+        function approveTask(taskId) {
+            if (!selectedBeneficiary) return;
+
+            // Update task
+            const tasks = App.Data.getTasks();
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex === -1) return;
+
+            tasks[taskIndex].status = 'Approved';
+            tasks[taskIndex].beggarId = selectedBeneficiary.id;
+            localStorage.setItem('hh_tasks', JSON.stringify(tasks));
+
+            // Add points to beneficiary
+            const pointsToAdd = tasks[taskIndex].points;
+            App.Data.updateBeggarPoints(selectedBeneficiary.id, pointsToAdd);
+
+            // Reload
+            selectedBeneficiary = App.Data.getBeggarById(selectedBeneficiary.id);
+            document.getElementById('selectedBeneficiaryPoints').textContent = selectedBeneficiary.points || 0;
+
+            App.Notifications.showToast(`Task approved! ${pointsToAdd} points added to ${selectedBeneficiary.name}`, 'success');
+            loadTasksForBeneficiary();
+        }
+
+        function denyTask(taskId) {
+            const tasks = App.Data.getTasks();
+            const taskIndex = tasks.findIndex(t => t.id === taskId);
+            if (taskIndex === -1) return;
+
+            tasks[taskIndex].status = 'Rejected';
+            localStorage.setItem('hh_tasks', JSON.stringify(tasks));
+
+            App.Notifications.showToast('Task denied', 'warning');
+            loadTasksForBeneficiary();
+        }
+
+        function showBeneficiaryView() {
+            document.getElementById('beneficiaryView').style.display = 'block';
+            document.getElementById('taskView').style.display = 'none';
+            selectedBeneficiary = null;
+        }
+    </script>
+</body>
+
+</html>

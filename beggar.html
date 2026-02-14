@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <a href="beggars.html" class="flex items-center gap-2 mb-4 text-muted hover:text-primary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+
+            <div class="grid-2">
+                <!-- Profile Card -->
+                <div class="card">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h1 id="b-name">Loading...</h1>
+                            <p id="b-details" class="mb-4">...</p>
+                            <div id="b-badges" class="flex gap-2 mb-4"></div>
+                        </div>
+                        <div class="text-center p-4 bg-yellow-50 rounded"
+                            style="background:#fffbeb; border:1px solid #fcd34d; border-radius:var(--radius);">
+                            <div id="b-points" style="font-size:2rem; font-weight:700; color:#b45309;">0</div>
+                            <div style="font-size:0.8rem; font-weight:600; color:#d97706;">POINTS</div>
+                        </div>
+                    </div>
+
+                    <div style="margin-top:2rem;">
+                        <h3>Unique Identity QR</h3>
+                        <p>Scan this to assign tasks or redeem items.</p>
+                        <div class="flex items-center gap-4">
+                            <div id="qr-box" class="qr-container">
+                                <!-- QR Image -->
+                            </div>
+                            <button onclick="window.print()" class="btn btn-outline" style="height:fit-content;">
+                                <i class="fas fa-print"></i> Print ID Card
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="card">
+                    <h3>Recent History</h3>
+                    <div id="history-list" style="max-height:400px; overflow-y:auto; margin-top:1rem;">
+                        <p class="text-center text-muted">No activity yet.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const id = App.Utils.getQueryParam('id');
+            if (!id) window.location.href = 'beggars.html';
+
+            loadProfile(id);
+        });
+
+        function loadProfile(id) {
+            const beggar = App.Data.getBeggarById(id);
+            if (!beggar) return alert('Individual not found');
+
+            // Set Details
+            document.getElementById('b-name').textContent = beggar.name;
+            document.getElementById('b-details').textContent = `ID: ${beggar.id} • ${beggar.age} yrs • ${beggar.gender} • ${beggar.location}`;
+            document.getElementById('b-points').textContent = beggar.points;
+
+            // Badges
+            const statusBadge = beggar.status === 'Abled'
+                ? `<span class="badge badge-success">Physically Abled</span>`
+                : `<span class="badge badge-warning">Physically Disabled</span>`;
+            document.getElementById('b-badges').innerHTML = statusBadge;
+
+            // Generate QR
+            const qrUrl = App.UI.generateQR(`beggar.html?id=${beggar.id}`);
+            document.getElementById('qr-box').innerHTML = `<img src="${qrUrl}" alt="QR" width="150">`;
+
+            // Load History
+            const allTasks = App.Data.getTasks().filter(t => t.beggarId === id);
+            const list = document.getElementById('history-list');
+
+            if (allTasks.length > 0) {
+                list.innerHTML = allTasks.reverse().map(t => {
+                    let icon = t.status === 'Approved' ? '<i class="fas fa-check-circle text-success"></i>' :
+                        (t.status === 'Rejected' ? '<i class="fas fa-times-circle text-danger"></i>' : '<i class="fas fa-clock text-muted"></i>');
+
+                    let color = t.status === 'Approved' ? 'color:var(--success);' : (t.status === 'Rejected' ? 'color:var(--danger);' : '');
+
+                    return `
+                        <div style="padding:1rem; border-bottom:1px solid #f1f5f9; display:flex; justify-content:space-between; align-items:center;">
+                            <div>
+                                <div style="font-weight:600;">${t.title}</div>
+                                <div style="font-size:0.8rem; color:var(--text-muted);">${t.timestamp}</div>
+                            </div>
+                            <div style="text-align:right;">
+                                <div style="font-weight:700; ${color}">${t.status === 'Rejected' ? '0' : '+' + t.points} pts</div>
+                                <div style="font-size:0.8rem;">${icon} ${t.status}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+        }
+    </script>
+</body>
+
+</html>

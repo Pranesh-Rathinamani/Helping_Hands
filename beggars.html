@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Beggars - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <!-- Sidebar Container -->
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="flex justify-between items-center mb-4">
+                <div>
+                    <h1>Beneficiaries</h1>
+                    <p>Register and manage individuals in need.</p>
+                </div>
+                <button onclick="document.getElementById('addModal').style.display='flex'" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Register New
+                </button>
+            </header>
+
+            <!-- Grid of Beggars -->
+            <div id="beggar-grid" class="grid-3">
+                <!-- Beggar Cards Injected Here -->
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Modal -->
+    <div id="addModal"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:100;">
+        <div class="card" style="width:400px; max-width:90%;">
+            <div class="flex justify-between items-center mb-4">
+                <h2>Register Individual</h2>
+                <i class="fas fa-times" style="cursor:pointer;"
+                    onclick="document.getElementById('addModal').style.display='none'"></i>
+            </div>
+
+            <form onsubmit="event.preventDefault(); submitBeggar(this);">
+                <div class="form-group">
+                    <label class="form-label">Full Name</label>
+                    <input type="text" name="name" class="form-input" required>
+                </div>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label class="form-label">Age</label>
+                        <input type="number" name="age" class="form-input" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Gender</label>
+                        <select name="gender" class="form-input">
+                            <option>Male</option>
+                            <option>Female</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Physical Status</label>
+                    <select name="status" class="form-input">
+                        <option value="Abled">Physically Abled</option>
+                        <option value="Disabled">Physically Disabled</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Location / Area</label>
+                    <input type="text" name="location" class="form-input" placeholder="e.g. Railway Station" required>
+                </div>
+
+                <div class="flex" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary" style="flex:1">Register & Generate QR</button>
+                    <button type="button" onclick="document.getElementById('addModal').style.display='none'"
+                        class="btn btn-outline">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBeggars();
+        });
+
+        function loadBeggars() {
+            const list = App.Data.getBeggars();
+            const grid = document.getElementById('beggar-grid');
+            grid.innerHTML = '';
+
+            if (list.length === 0) {
+                grid.innerHTML = '<p class="text-center" style="grid-column: 1/-1;">No records found. Register someone to start.</p>';
+            }
+
+            list.forEach(b => {
+                const statusBadge = b.status === 'Abled'
+                    ? `<span class="badge badge-success">Abled</span>`
+                    : `<span class="badge badge-warning">Disabled</span>`;
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div style="width:50px; height:50px; background:#e0f2fe; border-radius:50%; display:flex; align-items:center; justify-content:center; color:var(--primary); font-size:1.5rem; font-weight:700;">
+                            ${b.name.charAt(0)}
+                        </div>
+                        <div class="text-center">
+                            <div style="font-size:1.25rem; font-weight:700; color:var(--accent);">${b.points}</div>
+                            <div style="font-size:0.75rem; color:var(--text-muted);">POINTS</div>
+                        </div>
+                    </div>
+                    <h3 style="margin-bottom:0.25rem;">${b.name}</h3>
+                    <p style="font-size:0.9rem; margin-bottom:1rem;">${b.age} yrs • ${b.gender}</p>
+                    
+                    <div class="flex items-center gap-2 mb-4">
+                        ${statusBadge}
+                        <span style="font-size:0.8rem; color:var(--text-muted);"><i class="fas fa-map-marker-alt"></i> ${b.location}</span>
+                    </div>
+
+                    <a href="beggar.html?id=${b.id}" class="btn btn-outline" style="width:100%;">View Profile & QR</a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function submitBeggar(form) {
+            const data = {
+                name: form.name.value,
+                age: form.age.value,
+                gender: form.gender.value,
+                status: form.status.value,
+                location: form.location.value
+            };
+            App.Data.addBeggar(data);
+            document.getElementById('addModal').style.display = 'none';
+            form.reset();
+            loadBeggars();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan QR - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- QR Scanner Lib (CDN) -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <header class="mb-4">
+                <h1>Identify Beneficiary</h1>
+                <p>Scan their unique QR code to view profile or assign tasks.</p>
+            </header>
+
+            <div class="grid-2">
+                <div class="card text-center">
+                    <div id="reader-container"
+                        style="width: 100%; height: 400px; background: #000; overflow: hidden; border-radius: var(--radius); position:relative;">
+                        <div id="reader" style="width:100%;"></div>
+                    </div>
+                    <p class="mt-4 text-muted"><i class="fas fa-camera"></i> Ensure proper lighting</p>
+                </div>
+
+                <div class="card">
+                    <h3>Manual Entry</h3>
+                    <p>If QR is damaged, enter ID manually.</p>
+                    <form onsubmit="event.preventDefault(); manualRedirect(this.bid.value);">
+                        <div class="form-group">
+                            <label class="form-label">Beneficiary ID</label>
+                            <input type="text" name="bid" class="form-input" placeholder="BG-123456" required>
+                        </div>
+                        <button class="btn btn-primary" style="width:100%;">Find</button>
+                    </form>
+
+                    <div
+                        style="margin-top:2rem; padding:1rem; background:#f0fdfa; border-radius:var(--radius); border:1px solid var(--primary-light);">
+                        <h4><i class="fas fa-lightbulb text-primary"></i> Pro Tip</h4>
+                        <p style="margin:0; font-size:0.9rem;">Assign "Abled" beneficiaries physical tasks like cleaning
+                            or carrying. Assign "Disabled" beneficiaries street awareness or art tasks.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function manualRedirect(id) {
+            window.location.href = `beggar.html?id=${id}`;
+        }
+
+        // Init Scanner
+        function onScanSuccess(decodedText, decodedResult) {
+            if (decodedText.includes('beggar.html?id=')) {
+                // Stop scanning and redirect
+                html5QrcodeScanner.clear();
+                window.location.href = decodedText;
+            } else {
+                alert("Invalid QR Code. Please scan a Helping Hands ID.");
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Using logic instead of UI widget for better control if needed, but Widget is simpler for "Vanilla"
+            const html5QrcodeScanner = new Html5QrcodeScanner(
+                "reader",
+                { fps: 10, qrbox: { width: 250, height: 250 } },
+                /* verbose= */ false
+            );
+            html5QrcodeScanner.render(onScanSuccess);
+
+            // Expose to global scope for cleaner to stop
+            window.html5QrcodeScanner = html5QrcodeScanner;
+        });
+    </script>
+</body>
+
+</html>

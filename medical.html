@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Support - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        :root {
+            --accent-medical: #0891b2;
+            --accent-medical-secondary: #10b981;
+            --glass-bg-medical: rgba(8, 145, 178, 0.05);
+        }
+
+        .medical-page {
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        .hub-container {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Medical Banner */
+        .medical-banner {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.2), rgba(16, 185, 129, 0.15));
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 3rem;
+            margin-bottom: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .medical-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(8, 145, 178, 0.1) 0%, transparent 70%);
+            animation: pulse-slow 10s infinite;
+        }
+
+        .medical-info h1 {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, #fff 0%, var(--accent-medical) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .medical-stat-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .medical-stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: var(--radius-sm);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .medical-stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--accent-medical-secondary);
+            font-family: var(--font-heading);
+        }
+
+        .medical-stat-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Action Grid */
+        .action-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .action-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--accent-medical);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .action-icon {
+            font-size: 3rem;
+            color: var(--accent-medical);
+            margin-bottom: 1.5rem;
+        }
+
+        /* Request List */
+        .request-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .request-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .request-content {
+            flex: 1;
+        }
+
+        .request-tag {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+
+        .tag-urgent {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .tag-normal {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        /* Sidebar info style update */
+        .metric-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(8, 145, 178, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin: 0.2rem;
+            border: 1px solid rgba(8, 145, 178, 0.2);
+        }
+
+        /* Volunteer Registry */
+        .registry-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .registry-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-sm);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .registry-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .registry-avatar {
+            width: 50px;
+            height: 50px;
+            background: var(--accent-medical);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .registry-monitoring {
+            background: rgba(16, 185, 129, 0.05);
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            border: 1px dashed var(--accent-medical-secondary);
+            font-size: 0.85rem;
+        }
+
+        .registry-actions {
+            margin-top: auto;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        /* Cert/Transcript Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            backdrop-filter: blur(15px);
+            padding: 2rem;
+        }
+
+        .modal-container {
+            background: #fff;
+            width: 100%;
+            max-width: 1100px;
+            max-height: 95vh;
+            border-radius: var(--radius-sm);
+            position: relative;
+            overflow-y: auto;
+            box-shadow: 0 50px 100px -20px rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 1.5rem;
+            background: rgba(0, 0, 0, 0.05);
+            border: none;
+            color: #1e293b;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-size: 1.25rem;
+        }
+
+        .modal-close:hover {
+            background: #fee2e2;
+            color: #ef4444;
+            transform: rotate(180deg);
+        }
+
+        .modal-print-btn {
+            position: absolute;
+            top: 1.5rem;
+            right: 5rem;
+            z-index: 20;
+            padding: 0.75rem 1.5rem;
+            font-weight: 700;
+        }
+
+        /* Certificate-Specific Styles Local to Modal */
+        #cert-render-area {
+            --cert-gold: #b59458;
+            --cert-blue: #0f172a;
+            --cert-bg: #fffcf8;
+            color: #1e293b;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--cert-bg);
+            padding: 60px;
+            box-sizing: border-box;
+            border: 25px solid var(--cert-blue);
+            position: relative;
+            min-height: 800px;
+            overflow: hidden;
+        }
+
+        /* Watermark */
+        .cert-watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 25rem;
+            color: rgba(181, 148, 88, 0.03);
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Holographic Seal */
+        .cert-seal-holo {
+            position: absolute;
+            bottom: 60px;
+            right: 80px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle at 30% 30%, #ffd700, #b59458, #ffcc33);
+            border-radius: 50%;
+            border: 4px double #fff;
+            box-shadow: 0 10px 30px rgba(181, 148, 88, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 0.7rem;
+            text-align: center;
+            font-weight: 900;
+            transform: rotate(-10deg);
+            z-index: 5;
+            background-size: 200% 200%;
+            animation: holo-shine 5s linear infinite;
+        }
+
+        @keyframes holo-shine {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        #cert-render-area::after {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 3px solid var(--cert-gold);
+            pointer-events: none;
+        }
+
+        .cert-content-inner {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            border: 2px solid var(--cert-gold);
+            padding: 50px;
+            min-height: 650px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .cert-header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3.5rem;
+            margin: 0;
+            color: var(--cert-blue);
+            letter-spacing: 4px;
+        }
+
+        .cert-presented {
+            font-family: 'Montserrat', sans-serif;
+            font-style: italic;
+            color: #64748b;
+            margin-top: 2rem;
+            font-size: 1.25rem;
+        }
+
+        .cert-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            color: var(--cert-blue);
+            margin: 1rem 0;
+            border-bottom: 2px solid var(--cert-gold);
+            display: inline-block;
+            padding: 0 50px;
+        }
+
+        /* Transcript Premium Styles */
+        #transcript-render-area {
+            --medical-blue: #0f172a;
+            --medical-accent: #0891b2;
+            --bg-light: #f8fafc;
+            background: #fff;
+            color: #1e293b;
+            padding: 70px;
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .trans-sidebar-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 15px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--medical-blue), var(--medical-accent));
+        }
+
+        .trans-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 3rem;
+            border-bottom: 3px solid var(--medical-blue);
+            padding-bottom: 1.5rem;
+        }
+
+        .trans-badge {
+            background: var(--medical-blue);
+            color: #fff;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .trans-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .trans-section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            color: var(--medical-blue);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .trans-section-title::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .trans-stats-box {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            text-align: center;
+        }
+
+        .trans-stat-val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--medical-accent);
+        }
+
+        .trans-stat-lab {
+            font-size: 0.65rem;
+            color: #64748b;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .trans-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.9rem;
+        }
+
+        .trans-table th,
+        .trans-table td {
+            border: 1px solid #cbd5e1;
+            padding: 0.75rem;
+            text-align: left;
+        }
+
+        .trans-table th {
+            background: var(--bg-light);
+            color: var(--medical-blue);
+        }
+
+        @media print {
+
+            .app-layout,
+            .modal-overlay,
+            .modal-close,
+            .modal-print-btn {
+                display: none !important;
+            }
+
+            .print-active {
+                display: block !important;
+                position: static !important;
+            }
+
+            #cert-modal {
+                background: white !important;
+            }
+
+            #cert-render-area,
+            #transcript-render-area {
+                border: none !important;
+                box-shadow: none !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="medical-page">
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <div class="hub-container">
+                <!-- Header Banner -->
+                <header class="medical-banner animate-slideUp">
+                    <div class="medical-info">
+                        <h1>Medical Support Center</h1>
+                        <p class="text-secondary" style="font-size: 1.25rem; max-width: 600px;">
+                            Providing essential healthcare support through our network of verified medical volunteers.
+                        </p>
+                        <div class="medical-stat-grid">
+                            <div class="medical-stat-item">
+                                <div class="medical-stat-value" id="stat-completed-tasks">0</div>
+                                <div class="medical-stat-label">Tasks Completed</div>
+                            </div>
+                            <div class="medical-stat-item">
+                                <div class="medical-stat-value" id="stat-active-vols">0</div>
+                                <div class="medical-stat-label">Active Volunteers</div>
+                            </div>
+                            <div class="medical-stat-item">
+                                <div class="medical-stat-value" id="stat-lives-impacted">0</div>
+                                <div class="medical-stat-label">Lives Impacted</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="text-align: right;" class="hide-mobile">
+                        <i class="fas fa-hand-holding-medical" style="font-size: 10rem; opacity: 0.1;"></i>
+                    </div>
+                </header>
+
+                <!-- Quick Certificate Generation Section -->
+                <section class="animate-slideUp" style="animation-delay: 0.1s; margin-bottom: 4rem;">
+                    <div
+                        style="background: rgba(8, 145, 178, 0.05); border: 2px solid var(--accent-medical); border-radius: var(--radius-sm); padding: 2rem;">
+                        <h2 style="margin-top: 0;"><i class="fas fa-magic"></i> Quick Certificate Generation</h2>
+                        <p class="text-secondary">Enter your name below to generate your official medical service
+                            documents instantly.</p>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 1.5rem;">
+                            <input type="text" id="visitor-name" placeholder="Enter Full Name"
+                                style="flex: 1; min-width: 250px; padding: 0.75rem 1rem; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--glass-border); border-radius: 4px; color: white;">
+                            <button class="btn btn-outline"
+                                style="border-color: var(--accent-medical); color: var(--accent-medical);"
+                                onclick="quickGenerate('cert')">
+                                <i class="fas fa-award"></i> Generate Certificate
+                            </button>
+                            <button class="btn btn-primary" onclick="quickGenerate('transcript')">
+                                <i class="fas fa-file-medical-alt"></i> Generate Transcript
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="action-grid">
+                    <!-- Enrollment Certificate Card -->
+                    <div id="enrollment-card" class="action-card animate-slideUp"
+                        style="animation-delay: 0.1s; border-color: var(--accent-medical-secondary);">
+                        <i class="fas fa-file-signature action-icon"
+                            style="color: var(--accent-medical-secondary);"></i>
+                        <h2>For Medical Students</h2>
+                        <p class="text-secondary" style="margin-bottom: 2rem;">
+                            Joining the program? Download your official enrollment certificate to verify your status
+                            with your institution or for field work.
+                        </p>
+                        <button class="btn btn-outline w-full"
+                            style="border-color: var(--accent-medical-secondary); color: var(--accent-medical-secondary);"
+                            onclick="downloadEnrollmentCert()">
+                            <i class="fas fa-certificate"></i> Get Enrollment Certificate
+                        </button>
+                    </div>
+
+                    <!-- Request Support Card -->
+                    <div class="action-card animate-slideUp" style="animation-delay: 0.2s;">
+                        <i class="fas fa-heartbeat action-icon"></i>
+                        <h2>Need Medical Help?</h2>
+                        <p class="text-secondary" style="margin-bottom: 2rem;">
+                            If you or someone you know requires basic medical assistance, first aid, or a health
+                            checkup, our volunteers are here to help.
+                        </p>
+                        <button class="btn btn-primary w-full" style="background: var(--gradient-secondary);"
+                            onclick="showMedicalRequestModal()">
+                            <i class="fas fa-plus-circle"></i> Submit Help Request
+                        </button>
+                    </div>
+
+                    <!-- Join as Volunteer Card -->
+                    <div id="join-card" class="action-card animate-slideUp" style="animation-delay: 0.3s;">
+                        <i class="fas fa-user-md action-icon" style="color: var(--accent-medical-secondary);"></i>
+                        <h2>Join Our Network</h2>
+                        <p class="text-secondary" style="margin-bottom: 2rem;">
+                            Step up and make a difference. Join our specialized medical volunteer community and start
+                            assisting those in need today.
+                        </p>
+                        <button class="btn btn-outline w-full"
+                            style="border-color: var(--accent-medical-secondary); color: var(--accent-medical-secondary);"
+                            onclick="window.location.href='register.html?role=MedicalVolunteer'">
+                            <i class="fas fa-plus"></i> Join as Medical Volunteer
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Medical Volunteer Registry Section -->
+                <section class="animate-slideUp" style="animation-delay: 0.4s; margin-bottom: 4rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                        <h2 style="margin: 0;"><i class="fas fa-stethoscope"></i> Medical Volunteer Registry</h2>
+                        <div id="self-cert-action" style="display: none; gap: 1rem;">
+                            <button class="btn btn-outline"
+                                style="border-color: var(--accent-medical); color: var(--accent-medical);"
+                                onclick="generateMedicalCert()">
+                                <i class="fas fa-award"></i> Service Certificate
+                            </button>
+                            <button class="btn btn-primary" onclick="downloadClinicalTranscript()">
+                                <i class="fas fa-file-medical-alt"></i> Clinical Service Transcript
+                            </button>
+                        </div>
+                    </div>
+                    <div class="registry-grid" id="volunteer-registry">
+                        <!-- Populated by JS -->
+                    </div>
+                </section>
+
+                <!-- Active Requests Section -->
+                <section class="animate-slideUp" style="animation-delay: 0.3s;">
+                    <h2 style="margin-bottom: 2rem;"><i class="fas fa-list-ul"></i> Recent Medical Support Missions</h2>
+                    <div class="request-list" id="global-medical-requests">
+                        <!-- Populated by JS -->
+                        <div class="request-item">
+                            <div class="request-content text-center" style="width: 100%;">
+                                <p class="text-muted">Loading active missions...</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Medical Request Modal (Public) -->
+    <div id="medicalRequestModal" class="modal"
+        style="display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); backdrop-filter: blur(10px);">
+        <div class="modal-content card animate-zoomIn"
+            style="margin: 5% auto; padding: 3rem; width: 90%; max-width: 550px; border: 1px solid var(--accent-medical);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 style="margin: 0; color: #fff;"><i class="fas fa-heartbeat"></i> New Help Request</h2>
+                <i class="fas fa-times" style="cursor: pointer; font-size: 1.5rem; color: var(--text-muted);"
+                    onclick="closeMedicalRequestModal()"></i>
+            </div>
+            <form onsubmit="handleMedicalRequest(event)">
+                <div class="form-group">
+                    <label class="form-label">Support Category</label>
+                    <select name="type" class="form-input" style="background: rgba(255,255,255,0.05);" required>
+                        <option value="Basic Checkup">Basic Checkup</option>
+                        <option value="Elderly Care">Elderly Care</option>
+                        <option value="First Aid">First Aid</option>
+                        <option value="Mother & Child Support">Mother & Child Support</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Urgency Level</label>
+                    <select name="urgency" class="form-input" style="background: rgba(255,255,255,0.05);" required>
+                        <option value="Low">Low (Non-emergency)</option>
+                        <option value="Medium">Medium (Needed today)</option>
+                        <option value="High">High (Immediate attention)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current Location</label>
+                    <input type="text" name="location" class="form-input"
+                        placeholder="e.g. Village Name, Building Number" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Problem Statement</label>
+                    <textarea name="description" class="form-input" style="min-height: 100px;"
+                        placeholder="Briefly describe what help is needed..." required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary w-full"
+                    style="margin-top: 1rem; background: var(--gradient-secondary);">
+                    Submit Request
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Certificate Modal Container -->
+    <div id="cert-modal" class="modal-overlay">
+        <div class="modal-container">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <button class="btn btn-primary modal-print-btn" onclick="printCert()"><i class="fas fa-print"></i>
+                Print</button>
+            <div id="render-area-root">
+                <!-- Cert or Transcript injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            App.init();
+            loadMedicalData();
+            checkMedicalStatus();
+        });
+
+        function checkMedicalStatus() {
+            const user = App.Auth.getCurrentUser();
+            const selfCertAction = document.getElementById('self-cert-action');
+            const enrollmentCard = document.getElementById('enrollment-card');
+            const joinCard = document.getElementById('join-card');
+
+            if (user && user.isMedicalVolunteer) {
+                if (enrollmentCard) enrollmentCard.style.display = 'block';
+                if (joinCard) joinCard.style.display = 'none';
+                if (selfCertAction) selfCertAction.style.display = 'flex';
+            } else {
+                if (enrollmentCard) enrollmentCard.style.display = 'none';
+                if (joinCard) joinCard.style.display = 'block';
+                if (selfCertAction) selfCertAction.style.display = 'none';
+            }
+        }
+
+        function downloadEnrollmentCert() {
+            window.location.href = 'medical_enrollment_certificate.html';
+        }
+
+        function generateMedicalCert() {
+            // Updated to use same-page generation
+            const user = App.Auth.getCurrentUser();
+            quickGenerate('cert', user ? user.name : 'Medical Volunteer');
+        }
+
+        function downloadClinicalTranscript() {
+            // Updated to use same-page generation
+            const user = App.Auth.getCurrentUser();
+            quickGenerate('transcript', user ? user.name : 'Medical Volunteer');
+        }
+
+        function quickGenerate(type, forcedName = null) {
+            const name = forcedName || document.getElementById('visitor-name').value;
+            if (!name) return alert('Please enter your name first!');
+
+            const modal = document.getElementById('cert-modal');
+            const renderArea = document.getElementById('render-area-root');
+            modal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+
+            if (type === 'cert') {
+                renderArea.innerHTML = `
+                    <div id="cert-render-area">
+                        <div class="cert-watermark"><i class="fas fa-hand-holding-medical"></i></div>
+                        <div class="cert-seal-holo">OFFICIAL<br>VERIFIED<br>SERVICE</div>
+                        <div class="cert-content-inner">
+                            <div class="cert-header">
+                                <div style="font-size: 2.5rem; color: var(--cert-blue); margin-bottom: 10px;"><i class="fas fa-heartbeat"></i></div>
+                                <h1>Certificate of Excellence</h1>
+                                <p style="text-transform: uppercase; color: #b59458; letter-spacing: 4px; font-weight: 800; font-size: 0.9rem;">Medical Community Service Engagement</p>
+                            </div>
+                            
+                            <div class="cert-body">
+                                <p class="cert-presented">This prestigious award is proudly conferred upon</p>
+                                <div class="cert-name">${name}</div>
+                                <p style="font-size: 1.25rem; line-height: 1.8; max-width: 800px; margin: 2rem auto; color: #475569;">
+                                    In deep appreciation for your unwavering commitment and extraordinary service as a health advocate within the <strong>Helping Hands Social Impact Ecosystem</strong>. Your contributions towards community health equity have been exemplary.
+                                </p>
+                            </div>
+
+                            <div style="display: flex; justify-content: space-between; align-items: flex-end; padding: 0 40px; margin-top: 40px;">
+                                <div style="text-align: center; border-top: 1px solid var(--cert-blue); width: 220px; padding-top: 10px;">
+                                    <div style="font-family: 'Playfair Display', serif; font-weight: 700;">Helping Hands Team</div>
+                                    <small style="color: #94a3b8; text-transform: uppercase;">Platform Director</small>
+                                </div>
+                                <div style="text-align: center;">
+                                    <img src="https://api.qrserver.com/v1/create-qr-code/?size=80x80&data=VERIFIED-${encodeURIComponent(name)}" style="opacity: 0.7; filter: grayscale(1);">
+                                    <div style="font-size: 0.6rem; color: #94a3b8; margin-top: 5px;">VERIFY ID: ${Math.random().toString(36).substr(2, 9).toUpperCase()}</div>
+                                </div>
+                                <div style="text-align: center; border-top: 1px solid var(--cert-blue); width: 220px; padding-top: 10px;">
+                                    <div style="font-family: 'Playfair Display', serif; font-weight: 700;">Board of Ethics</div>
+                                    <small style="color: #94a3b8; text-transform: uppercase;">Medical Supervisor</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                renderArea.innerHTML = `
+                    <div id="transcript-render-area">
+                        <div class="trans-sidebar-stripe"></div>
+                        <div class="trans-header">
+                            <div>
+                                <h1 style="font-family: 'Cinzel', serif; font-size: 2rem; margin: 0;">Helping Hands</h1>
+                                <p style="margin: 0; font-size: 0.75rem; color: #64748b; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Clinical Outreach Practitioner Program</p>
+                            </div>
+                            <div style="text-align: right;">
+                                <div class="trans-badge">Official Record</div>
+                                <p style="font-family: 'Roboto Mono', monospace; font-size: 0.8rem; margin-top: 10px; color: #94a3b8;">UID: HH-CLIN-${Date.now().toString().slice(-6)}</p>
+                            </div>
+                        </div>
+
+                        <div class="trans-grid">
+                            <div class="trans-section">
+                                <h3 class="trans-section-title"><i class="fas fa-user-circle"></i> Practitioner Data</h3>
+                                <p style="margin: 0.5rem 0;"><strong>Candidate:</strong> ${name}</p>
+                                <p style="margin: 0.5rem 0;"><strong>Credential:</strong> Registered Medical Volunteer</p>
+                                <p style="margin: 0.5rem 0;"><strong>Affiliation:</strong> Helping Hands Global Network</p>
+                                <p style="margin: 0.5rem 0;"><strong>Field Period:</strong> Jan 2026 - Present</p>
+                            </div>
+                            <div class="trans-section">
+                                <h3 class="trans-section-title"><i class="fas fa-chart-line"></i> Performance Metrics</h3>
+                                <div class="trans-stats-box">
+                                    <div><div class="trans-stat-val">24</div><div class="trans-stat-lab">Total Hrs</div></div>
+                                    <div><div class="trans-stat-val">12</div><div class="trans-stat-lab">Tasks Done</div></div>
+                                    <div><div class="trans-stat-val">2.4</div><div class="trans-stat-lab">Credits</div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trans-section">
+                            <h3 class="trans-section-title"><i class="fas fa-clipboard-list"></i> Detailed Clinical Activity Log</h3>
+                            <table class="trans-table">
+                                <thead><tr><th>Event Date</th><th>Case ID</th><th>Scope of Care</th><th>Outcomes</th></tr></thead>
+                                <tbody>
+                                    <tr><td>Feb 05, 2026</td><td>CASE-77A</td><td>General Screening & Vitals</td><td><strong>Stabilized</strong></td></tr>
+                                    <tr><td>Feb 06, 2026</td><td>CASE-12B</td><td>Pediatric Nutrition Monitor</td><td><strong>Improved</strong></td></tr>
+                                    <tr><td>Feb 07, 2026</td><td>CASE-99X</td><td>Elderly Mobility Assistance</td><td><strong>In-Progress</strong></td></tr>
+                                    <tr><td>Feb 07, 2026</td><td>CASE-44K</td><td>Emergency First Aid Response</td><td><strong>Resolved</strong></td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div style="margin-top: 3rem; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 2rem;">
+                            <div style="font-size: 0.8rem; color: #64748b; max-width: 400px;">
+                                This practitioner has demonstrated exceptional competence in community-based clinical rotations. 
+                                Competencies verified: Vital Signs, Nutrition, Triage, and Ethics.
+                            </div>
+                            <div style="text-align: center;">
+                                <div style="font-family: 'Cinzel', serif; font-size: 1rem; color: #0f172a;">HH BOARD ENDORSED</div>
+                                <div style="font-size: 0.6rem; color: #94a3b8;">Digitally Signed & Secured</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('cert-modal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function printCert() {
+            window.print();
+        }
+
+        function loadMedicalData() {
+            const stats = App.Data.Medical.getStats();
+            document.getElementById('stat-completed-tasks').textContent = stats.completed + 42;
+            document.getElementById('stat-active-vols').textContent = stats.registrySize || 10;
+            document.getElementById('stat-lives-impacted').textContent = (stats.registrySize || 10) * 8;
+
+            // Load Registry
+            const registry = App.Data.Medical.getRegistry();
+            const registryContainer = document.getElementById('volunteer-registry');
+            registryContainer.innerHTML = registry.map(v => `
+                <div class="registry-card">
+                    <div class="registry-header">
+                        <div class="registry-avatar"><i class="fas fa-user-md"></i></div>
+                        <div>
+                            <h3 style="margin: 0;">${v.name}</h3>
+                            <p class="text-muted small" style="margin: 0;">${v.specialty}</p>
+                        </div>
+                    </div>
+                    <div class="registry-monitoring">
+                        <i class="fas fa-eye"></i> <strong>Monitoring:</strong> ${v.monitoring}
+                    </div>
+                    <div style="font-size: 0.8rem; color: var(--text-muted);">
+                        <i class="fas fa-clock"></i> Service Hours: ${v.hours} hrs
+                    </div>
+                    <div class="registry-actions">
+                        <span class="badge badge-success" style="font-size: 0.6rem;">${v.status}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            const requests = App.Data.Medical.getRequests().slice(-5).reverse();
+            const container = document.getElementById('global-medical-requests');
+
+            if (requests.length === 0) {
+                container.innerHTML = '<div class="request-item"><p class="text-muted">No recent missions available.</p></div>';
+                return;
+            }
+
+            container.innerHTML = requests.map(r => `
+                <div class="request-item">
+                    <div class="request-content">
+                        <span class="request-tag ${r.urgency === 'High' ? 'tag-urgent' : 'tag-normal'}">${r.urgency}</span>
+                        <h3 style="margin: 0.5rem 0;">${r.type}</h3>
+                        <p class="text-muted small">${r.description.substring(0, 100)}${r.description.length > 100 ? '...' : ''}</p>
+                    </div>
+                    <div style="text-align: right;">
+                        <div class="metric-pill"><i class="fas fa-map-marker-alt"></i> ${r.location}</div>
+                        <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 0.5rem;">${r.timestamp}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showMedicalRequestModal() {
+            document.getElementById('medicalRequestModal').style.display = 'block';
+        }
+
+        function closeMedicalRequestModal() {
+            document.getElementById('medicalRequestModal').style.display = 'none';
+        }
+
+        function handleMedicalRequest(e) {
+            e.preventDefault();
+            const form = e.target;
+            const request = {
+                type: form.type.value,
+                urgency: form.urgency.value,
+                location: form.location.value,
+                description: form.description.value
+            };
+            App.Data.Medical.addRequest(request);
+            App.Notifications.showToast('Medical request submitted! Our volunteers have been notified.', 'success');
+            closeMedicalRequestModal();
+            loadMedicalData();
+        }
+    </script>
+</body>
+
+</html>

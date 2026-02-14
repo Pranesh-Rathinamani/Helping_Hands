@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .poster-banner {
+            background: linear-gradient(135deg, #5b21b6, #0891b2, #f59e0b);
+            padding: 4rem 2rem;
+            text-align: center;
+            border-radius: var(--radius);
+            margin-bottom: 3rem;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .poster-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+            animation: moveBackground 20s linear infinite;
+        }
+
+        @keyframes moveBackground {
+            0% {
+                transform: translate(0, 0);
+            }
+
+            100% {
+                transform: translate(50px, 50px);
+            }
+        }
+
+        .poster-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .info-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+        }
+
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(139, 92, 246, 0.3);
+        }
+
+        .payment-box {
+            background: linear-gradient(135deg, rgba(91, 33, 182, 0.1), rgba(8, 145, 178, 0.1));
+            border: 2px solid var(--neon-purple);
+            border-radius: var(--radius);
+            padding: 2.5rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .payment-detail {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(139, 92, 246, 0.05);
+            border-radius: var(--radius-sm);
+            margin: 0.75rem 0;
+        }
+
+        .copy-btn {
+            background: var(--neon-purple);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-sm);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .copy-btn:hover {
+            background: #7c3aed;
+            transform: scale(1.05);
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .team-member {
+            text-align: center;
+            padding: 2rem;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: var(--gradient-primary);
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <!-- Poster Banner -->
+            <div class="poster-banner animate-slideUp">
+                <h1><i class="fas fa-hand-holding-heart"></i> Helping Hands</h1>
+                <p style="font-size: 1.5rem; margin-bottom: 0; position: relative; z-index: 1;">Making a Difference, One
+                    Act of Kindness at a Time</p>
+            </div>
+
+            <!-- About Section -->
+            <div class="animate-slideUp" style="animation-delay: 0.1s;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-info-circle"></i> About Us</h2>
+                <div class="info-card">
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-primary);">
+                        <strong>Helping Hands</strong> is a community-driven platform dedicated to connecting volunteers
+                        with those in need.
+                        Our mission is to create a positive impact by facilitating acts of kindness, supporting
+                        families,
+                        and providing essential resources to beneficiaries.
+                    </p>
+                    <p style="font-size: 1.125rem; line-height: 1.8; color: var(--text-primary); margin-top: 1rem;">
+                        Through our platform, volunteers can earn points for completing tasks, track their impact,
+                        and be part of a compassionate community working together to make the world a better place.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Mission & Vision -->
+            <div class="animate-slideUp" style="animation-delay: 0.2s;">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem;">
+                    <div class="info-card">
+                        <h3 style="color: var(--neon-purple); margin-bottom: 1rem;"><i class="fas fa-bullseye"></i> Our
+                            Mission</h3>
+                        <p style="line-height: 1.8;">
+                            To empower communities by connecting compassionate volunteers with individuals and families
+                            in need,
+                            creating a sustainable ecosystem of support and kindness.
+                        </p>
+                    </div>
+                    <div class="info-card">
+                        <h3 style="color: #0891b2; margin-bottom: 1rem;"><i class="fas fa-eye"></i> Our Vision</h3>
+                        <p style="line-height: 1.8;">
+                            A world where every person has access to support, every act of kindness is celebrated,
+                            and communities thrive through collective compassion and action.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Support Us Section -->
+            <div class="animate-slideUp" style="animation-delay: 0.3s;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-donate"></i> Support Our Cause</h2>
+                <div class="payment-box">
+                    <h3 style="font-size: 1.75rem; margin-bottom: 1.5rem;">💰 Help Us Make a Bigger Impact</h3>
+                    <p style="font-size: 1.125rem; margin-bottom: 2rem; color: var(--text-muted);">
+                        Your contributions help us provide essential resources to beneficiaries and expand our reach
+                    </p>
+
+                    <div class="payment-detail">
+                        <i class="fas fa-phone" style="font-size: 1.5rem; color: #10b981;"></i>
+                        <div style="text-align: left;">
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">UPI / Phone Pay</div>
+                            <div style="font-size: 1.25rem; font-weight: 700; font-family: monospace;">93445 26300</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('9344526300')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+
+                    <div class="payment-detail">
+                        <i class="fas fa-envelope" style="font-size: 1.5rem; color: #f59e0b;"></i>
+                        <div style="text-align: left;">
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">Email / UPI ID</div>
+                            <div style="font-size: 1.125rem; font-weight: 700; font-family: monospace;">
+                                mail2pranesh23@oksbi</div>
+                        </div>
+                        <button class="copy-btn" onclick="copyToClipboard('mail2pranesh23@oksbi')">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                    </div>
+
+                    <p style="margin-top: 2rem; font-size: 0.875rem; color: var(--text-muted);">
+                        <i class="fas fa-shield-alt"></i> All donations are used for beneficiary support and platform
+                        maintenance
+                    </p>
+                </div>
+            </div>
+
+            <!-- Contact Section -->
+            <div class="animate-slideUp" style="animation-delay: 0.4s;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-address-book"></i> Contact Us</h2>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+                    <div class="info-card" style="text-align: center;">
+                        <i class="fas fa-envelope"
+                            style="font-size: 2.5rem; color: var(--neon-purple); margin-bottom: 1rem; display: block;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Email</h4>
+                        <a href="mailto:mail2pranesh23@gmail.com"
+                            style="color: #0891b2; text-decoration: none; font-weight: 600;">
+                            mail2pranesh23@gmail.com
+                        </a>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <i class="fas fa-phone-alt"
+                            style="font-size: 2.5rem; color: #10b981; margin-bottom: 1rem; display: block;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Phone</h4>
+                        <a href="tel:+919344526300" style="color: #0891b2; text-decoration: none; font-weight: 600;">
+                            +91 93445 26300
+                        </a>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <i class="fas fa-question-circle"
+                            style="font-size: 2.5rem; color: #f59e0b; margin-bottom: 1rem; display: block;"></i>
+                        <h4 style="margin-bottom: 0.5rem;">Queries</h4>
+                        <p style="color: var(--text-muted); font-size: 0.875rem;">
+                            For any questions or support, reach out via email or phone
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="animate-slideUp" style="animation-delay: 0.5s;">
+                <h2 style="margin-bottom: 1.5rem;"><i class="fas fa-chart-bar"></i> Our Impact</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem;">
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🎯</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--neon-purple);">500+</div>
+                        <div style="color: var(--text-muted); font-weight: 600;">Tasks Completed</div>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">👥</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #0891b2;">200+</div>
+                        <div style="color: var(--text-muted); font-weight: 600;">People Helped</div>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🌟</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #10b981;">50+</div>
+                        <div style="color: var(--text-muted); font-weight: 600;">Active Volunteers</div>
+                    </div>
+                    <div class="info-card" style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">💰</div>
+                        <div style="font-size: 2rem; font-weight: 700; color: #f59e0b;">₹50K+</div>
+                        <div style="color: var(--text-muted); font-weight: 600;">Support Provided</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                App.Notifications.showToast('Copied to clipboard!', 'success');
+            }).catch(() => {
+                App.Notifications.showToast('Failed to copy', 'error');
+            });
+        }
+    </script>
+</body>
+
+</html>

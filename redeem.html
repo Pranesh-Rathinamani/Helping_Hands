@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Redeem Shop - Helping Hands</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/animations.css">
+    <style>
+        .beneficiary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .beneficiary-card {
+            background: var(--glass-bg);
+            border: 2px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .beneficiary-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--neon-purple);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+        }
+
+        .shop-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .shop-item {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .shop-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .shop-item.affordable {
+            border-color: #10b981;
+        }
+
+        .shop-item.expensive {
+            opacity: 0.6;
+            border-color: #ef4444;
+        }
+
+        .item-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+            text-align: center;
+        }
+
+        .price-tag {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .back-button {
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="app-layout">
+        <aside class="sidebar" id="sidebar-container"></aside>
+
+        <main class="main-content">
+            <!-- Beneficiary Selection View -->
+            <div id="beneficiaryView">
+                <header class="mb-6">
+                    <h1 class="animate-slideUp"><i class="fas fa-shopping-basket"></i> Redeem Shop</h1>
+                    <p class="animate-slideUp" style="animation-delay: 0.1s;">Select a beneficiary to redeem items for
+                        them.</p>
+                </header>
+
+                <div class="beneficiary-grid" id="beneficiaryGrid">
+                    <!-- Beneficiaries loaded here -->
+                </div>
+            </div>
+
+            <!-- Shop View -->
+            <div id="shopView" style="display: none;">
+                <button class="btn btn-outline back-button" onclick="showBeneficiaryView()">
+                    <i class="fas fa-arrow-left"></i> Back to Beneficiaries
+                </button>
+
+                <div class="card" style="margin-bottom: 2rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <h2 id="selectedBeneficiaryName" style="margin: 0;">Loading...</h2>
+                            <div style="color: var(--text-muted); margin-top: 0.5rem;" id="selectedBeneficiaryInfo">
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-size: 2rem; font-weight: 700; color: var(--neon-purple);"
+                                id="selectedBeneficiaryPoints">0</div>
+                            <div style="color: var(--text-muted); font-size: 0.875rem;">Available Points</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="background: var(--glass-bg); padding: 1rem; border-radius: var(--radius); margin-bottom: 2rem; border: 1px solid var(--glass-border);">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <strong>Global Funds Available</strong>
+                            <div style="font-size: 0.875rem; color: var(--text-muted);">For fund-based items</div>
+                        </div>
+                        <div style="font-size: 1.5rem; font-weight: 700; color: #10b981;" id="globalFunds">$0</div>
+                    </div>
+                </div>
+
+                <h3>Available Items</h3>
+                <div class="shop-grid" id="shopGrid">
+                    <!-- Items loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/script.js"></script>
+    <script>
+        let selectedBeneficiary = null;
+
+        const shopItems = [
+            { name: 'Baby Kit', icon: '👶', points: 100, fundCost: 25, description: 'Complete baby care essentials' },
+            { name: 'Milk Packet', icon: '🥛', points: 50, fundCost: 10, description: '1 week supply of milk' },
+            { name: 'Sanitary Napkins', icon: '🩹', points: 30, fundCost: 5, description: 'Monthly supply' },
+            { name: 'Transport Pass', icon: '🚌', points: 80, fundCost: 15, description: 'Monthly bus pass' },
+            { name: 'Recharge', icon: '📱', points: 40, fundCost: 8, description: 'Mobile recharge voucher' },
+            { name: 'School Supplies', icon: '✏️', points: 60, fundCost: 12, description: 'Books, pens, notebooks' },
+            { name: 'Medicine', icon: '💊', points: 70, fundCost: 20, description: 'Basic medicine kit' },
+            { name: 'Food Kit', icon: '🍚', points: 120, fundCost: 30, description: 'Weekly grocery essentials' },
+            { name: 'Clothes', icon: '👕', points: 90, fundCost: 22, description: 'Basic clothing set' },
+            { name: 'Emergency Voucher', icon: '🆘', points: 150, fundCost: 40, description: 'Emergency cash voucher' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            loadBeneficiaries();
+        });
+
+        function loadBeneficiaries() {
+            const beggars = App.Data.getBeggars();
+            const grid = document.getElementById('beneficiaryGrid');
+
+            if (beggars.length === 0) {
+                grid.innerHTML = '<div class="card text-center">No beneficiaries enrolled yet. <a href="enroll.html">Enroll one now</a>.</div>';
+                return;
+            }
+
+            grid.innerHTML = beggars.map(b => `
+                <div class="beneficiary-card animate-slideUp" onclick="selectBeneficiary('${b.id}')">
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+                        <div style="width: 60px; height: 60px; border-radius: 50%; background: var(--gradient-secondary); display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: 700;">
+                            ${b.name.charAt(0)}
+                        </div>
+                        <div style="flex: 1;">
+                            <h3 style="margin: 0;">${b.name}</h3>
+                            <div style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem;">
+                                ID: ${b.id}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="background: rgba(139, 92, 246, 0.1); padding: 1rem; border-radius: var(--radius-sm); text-align: center;">
+                        <div style="font-size: 2rem; font-weight: 700; color: var(--neon-purple);">
+                            ${b.points || 0}
+                        </div>
+                        <div style="font-size: 0.875rem; color: var(--text-muted); margin-top: 0.25rem;">
+                            <i class="fas fa-star"></i> Available Points
+                        </div>
+                    </div>
+                    
+                    ${b.isNewBornMother ? '<div class="mother-badge" style="margin-top: 0.75rem; padding: 0.25rem 0.75rem; font-size: 0.75rem;"><i class="fas fa-baby-carriage"></i> Care Program</div>' : ''}
+                </div>
+            `).join('');
+        }
+
+        function selectBeneficiary(id) {
+            selectedBeneficiary = App.Data.getBeggarById(id);
+            if (!selectedBeneficiary) return;
+
+            // Update UI
+            document.getElementById('beneficiaryView').style.display = 'none';
+            document.getElementById('shopView').style.display = 'block';
+
+            document.getElementById('selectedBeneficiaryName').textContent = selectedBeneficiary.name;
+            document.getElementById('selectedBeneficiaryInfo').innerHTML = `
+                <i class="fas fa-id-card"></i> ${selectedBeneficiary.id} • 
+                ${selectedBeneficiary.isNewBornMother ? '<i class="fas fa-baby-carriage"></i> Care Program Member' : 'Regular Member'}
+            `;
+            document.getElementById('selectedBeneficiaryPoints').textContent = selectedBeneficiary.points || 0;
+
+            // Update global funds
+            const funds = App.Sponsor.getFunds();
+            document.getElementById('globalFunds').textContent = '$' + (funds.total || 0).toLocaleString();
+
+            loadShopItems();
+        }
+
+        function loadShopItems() {
+            const grid = document.getElementById('shopGrid');
+            const beneficiaryPoints = selectedBeneficiary.points || 0;
+
+            grid.innerHTML = shopItems.map(item => {
+                const canAfford = beneficiaryPoints >= item.points;
+                const affordClass = canAfford ? 'affordable' : 'expensive';
+
+                return `
+                    <div class="shop-item ${affordClass} animate-slideUp">
+                        <div class="item-icon">${item.icon}</div>
+                        <h3 style="text-align: center; margin-bottom: 0.5rem;">${item.name}</h3>
+                        <p style="text-align: center; color: var(--text-muted); font-size: 0.875rem; min-height: 40px;">
+                            ${item.description}
+                        </p>
+                        
+                        <div class="price-tag">
+                            <div>
+                                <div style="font-weight: 700; color: #f59e0b;">
+                                    <i class="fas fa-star"></i> ${item.points} pts
+                                </div>
+                                <div style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.25rem;">
+                                    Fund: $${item.fundCost}
+                                </div>
+                            </div>
+                            <button 
+                                class="btn ${canAfford ? 'btn-primary' : 'btn-outline'}" 
+                                ${!canAfford ? 'disabled' : ''}
+                                onclick="redeemItem('${item.name}', ${item.points}, ${item.fundCost})"
+                            >
+                                <i class="fas fa-shopping-cart"></i> Redeem
+                            </button>
+                        </div>
+
+                        ${!canAfford ? `
+                            <div style="margin-top: 0.5rem; text-align: center; font-size: 0.75rem; color: #ef4444;">
+                                <i class="fas fa-exclamation-circle"></i> Need ${item.points - beneficiaryPoints} more points
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function redeemItem(itemName, pointCost, fundCost) {
+            if (!selectedBeneficiary) return;
+
+            // Check points
+            if (selectedBeneficiary.points < pointCost) {
+                alert('Insufficient points!');
+                return;
+            }
+
+            // Check global funds
+            const funds = App.Sponsor.getFunds();
+            if (funds.total < fundCost) {
+                alert('Insufficient global funds! Please ask sponsors to donate more.');
+                return;
+            }
+
+            if (!confirm(`Confirm redemption?\n\nItem: ${itemName}\nPoints: ${pointCost}\nFund Usage: $${fundCost}\n\nThis will be deducted from ${selectedBeneficiary.name}'s account.`)) {
+                return;
+            }
+
+            // Deduct points from beneficiary
+            App.Data.updateBeggarPoints(selectedBeneficiary.id, -pointCost);
+
+            // Deduct funds
+            App.Sponsor.addFund(-fundCost);
+
+            // Log transaction
+            const tx = {
+                id: Date.now(),
+                type: 'Usage',
+                amount: fundCost,
+                item: itemName,
+                beneficiary: selectedBeneficiary.name,
+                date: new Date().toLocaleString()
+            };
+            const transactions = JSON.parse(localStorage.getItem('hh_transactions') || '[]');
+            transactions.unshift(tx);
+            localStorage.setItem('hh_transactions', JSON.stringify(transactions));
+
+            // Reload
+            selectedBeneficiary = App.Data.getBeggarById(selectedBeneficiary.id);
+            document.getElementById('selectedBeneficiaryPoints').textContent = selectedBeneficiary.points || 0;
+
+            const updatedFunds = App.Sponsor.getFunds();
+            document.getElementById('globalFunds').textContent = '$' + (updatedFunds.total || 0).toLocaleString();
+
+            App.Notifications.showToast(`${itemName} redeemed for ${selectedBeneficiary.name}!`, 'success');
+            loadShopItems();
+        }
+
+        function showBeneficiaryView() {
+            document.getElementById('beneficiaryView').style.display = 'block';
+            document.getElementById('shopView').style.display = 'none';
+            selectedBeneficiary = null;
+        }
+    </script>
+</body>
+
+</html>
